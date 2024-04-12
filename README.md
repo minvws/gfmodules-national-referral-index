@@ -30,3 +30,18 @@ export NEW_GID=$(id -g)
 When you're ready, build the application with: make container-build.
 
 Run make up to start the application.
+
+
+## Models
+
+```mermaid
+---
+title: Localization Register
+---
+classDiagram
+    class Provider {
+        + String pseudonym
+        + UUID provider_id
+        + String domain_name
+    }
+```
