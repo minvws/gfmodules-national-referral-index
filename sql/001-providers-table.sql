@@ -5,6 +5,8 @@ CREATE TABLE providers (
       PRIMARY KEY (pseudonym, provider_id, data_domain)
 );
 
+ALTER TABLE providers OWNER TO localisation;
+
 -- Mock: 950000012: 5afda8a1-dce9-43f8-b1af-c4dc765e7e17
 INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'ziekenhuis.amsterdam@medmij', 'beeldbank');
 INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'ziekenhuis.amsterdam@medmij', 'test resultaten');
