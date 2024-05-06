@@ -4,6 +4,12 @@ loglevel=debug
 [database]
 dsn=postgresql+psycopg://postgres:postgres@localisation_db:5432/postgres
 
+[telemetry]
+enabled = True
+endpoint = http://tracing:4317
+service_name = localisation
+tracer_name = zmodules.service.localisation
+
 [uvicorn]
 swagger_enabled = True
 docs_url = /docs
