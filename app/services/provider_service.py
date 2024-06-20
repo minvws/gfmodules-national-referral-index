@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, cast
 
 from app.db.models.provider import Provider
 from app.db.db import Database
@@ -16,22 +16,27 @@ class ProviderService:
         """
         Method that gets all the providers by pseudonym and data domain
         """
-        provider_repository = self._get_provider_repository()
+        with self.database.get_db_session() as session:
+            provider_repository = self.get_provider_repository(session)
 
-        results = provider_repository.find_many_providers(pseudonym, data_domain)
-        return results
+            results = provider_repository.find_many_providers(pseudonym, data_domain)
+            return results
 
     def add_one_provider(
         self, pseudonym: str, data_domain: str, provider_id: str
     ) -> None:
-        provider_repository = self._get_provider_repository()
-        provider_repository.add_one(
-            pseudonym=pseudonym, data_domain=data_domain, provider_id=provider_id
-        )
+        with self.database.get_db_session() as session:
+            provider_repository = self.get_provider_repository(session)
+            provider_repository.add_one(
+                pseudonym=pseudonym, data_domain=data_domain, provider_id=provider_id
+            )
 
-    def _get_provider_repository(self) -> ProviderRepository:
+    @staticmethod
+    def get_provider_repository(session: DbSession) -> ProviderRepository:
         """
         private method to get repository for providers
         """
-        provider_session = DbSession[ProviderRepository](self.database.engine)
-        return provider_session.get_repository(Provider)
+        return cast(
+            ProviderRepository,
+            session.get_repository(Provider)
+        )
