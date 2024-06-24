@@ -1,13 +1,16 @@
 from unittest import TestCase
 
+from app.config import set_config
 from app.db.models.provider import Provider
 from app.services.provider_service import ProviderService
 from app.db.db import Database
+from test_config import get_test_config
 
 
 class ProviderServiceTest(TestCase):
 
     def setUp(self) -> None:
+        set_config(get_test_config())
         # setup db
         self.db = Database("sqlite:///:memory:")
         self.db.generate_tables()

@@ -3,7 +3,7 @@ from typing import Sequence, cast
 from app.db.models.provider import Provider
 from app.db.db import Database
 from app.db.repository.provider_repository import ProviderRepository
-from app.db.db_session import DbSession
+from app.db.session import DbSession
 
 
 class ProviderService:
