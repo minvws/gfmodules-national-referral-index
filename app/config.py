@@ -74,6 +74,11 @@ def reset_config() -> None:
     _CONFIG = None
 
 
+def set_config(config: Config) -> None:
+    global _CONFIG
+    _CONFIG = config
+
+
 def get_config(path: str | None = None) -> Config:
     global _CONFIG
     global _PATH
@@ -89,6 +94,11 @@ def get_config(path: str | None = None) -> Config:
     ini_data = read_ini_file(path)
 
     try:
+        # Convert database.retry_backoff to a list of floats
+        ini_data["database"]["retry_backoff"] = [
+            float(i) for i in ini_data["database"]["retry_backoff"].split(",")
+        ]
+
         _CONFIG = Config(**ini_data)
     except ValidationError as e:
         raise e
