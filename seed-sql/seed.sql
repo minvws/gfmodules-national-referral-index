@@ -1,7 +1,5 @@
 -- Mock: 950000012: 5afda8a1-dce9-43f8-b1af-c4dc765e7e17
-INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'ziekenhuis.amsterdam@medmij', 'beeldbank');
-INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'ziekenhuis.amsterdam@medmij', 'test resultaten');
-INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17' , 'fysio.amsterdam@medmij' , 'test resultaten');
+INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'irealisatie.mock.metadata', 'beeldbank');
 
 -- Mock: 950000024: cb5d785e-6710-4910-963f-39c85b39e491
 INSERT INTO public.providers (pseudonym, provider_id, data_domain) VALUES ('cb5d785e-6710-4910-963f-39c85b39e491', 'ziekenhuis.amsterdam@medmij' , 'beeldbank');
