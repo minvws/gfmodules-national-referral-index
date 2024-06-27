@@ -66,7 +66,7 @@ class DbSession:
         Returns an instantiated repository for the given model class
         """
         if issubclass(repository_class, RepositoryBase):
-            return repository_class(self.session)
+            return repository_class(self)
         raise ValueError(f"No repository registered for model {repository_class}")
 
     def add(self, entry: Base) -> None:
