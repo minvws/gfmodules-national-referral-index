@@ -12,8 +12,8 @@ pool_recycle=1800
 [telemetry]
 enabled = True
 endpoint = http://tracing:4317
-service_name = localisation
-tracer_name = zmodules.service.localisation
+service_name = Nationale Verwijsindex
+tracer_name = zmodules.service.national_referral_index
 
 [uvicorn]
 swagger_enabled = True

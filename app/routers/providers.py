@@ -25,15 +25,15 @@ async def get_providers_info(
 ) -> Sequence[Provider]:
 
     span = trace.get_current_span()
-    span.set_attribute("data.data_domain", data.data_domain)
-    span.set_attribute("data.pseudonym", data.pseudonym)
+    span.update_name(f"POST /info pseudonym={data.pseudonym} data_domain={data.data_domain}")
 
     providers = provider_service.get_providers_by_domain_and_pseudonym(
         pseudonym=data.pseudonym, data_domain=data.data_domain
     )
-    span.set_attribute("providers_found", len(providers))
+    span.set_attribute("data.providers_found", len(providers))
 
     if len(providers) == 0:
         raise HTTPException(status_code=404, detail="No provider found")
 
+    span.set_attribute("data.providers", str(providers))
     return providers
