@@ -1,6 +1,6 @@
 from typing import List
 
-from app.data import Pseudonym, DataDomain, ProviderID
+from app.data import Pseudonym, DataDomain, UraNumber
 from app.db.db import Database
 from app.db.models.providerentity import ProviderEntity
 from app.db.repository.provider_repository import ProviderRepository
@@ -24,12 +24,12 @@ class ProviderService:
             return [self.hydrate_provider(entity) for entity in entities]
 
     def add_one_provider(
-        self, pseudonym: Pseudonym, data_domain: DataDomain, provider_id: ProviderID
+        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber
     ) -> None:
         with self.database.get_db_session() as session:
             provider_repository = session.get_repository(ProviderRepository)
             provider_repository.add_one(
-                pseudonym=pseudonym, data_domain=data_domain, provider_id=provider_id
+                pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
             )
 
     @staticmethod
@@ -39,7 +39,7 @@ class ProviderService:
             raise ValueError("Invalid data domain")
 
         return Provider(
-            provider_id=ProviderID(entity.provider_id),
+            ura_number=UraNumber(entity.ura_number),
             pseudonym=Pseudonym(entity.pseudonym),
             data_domain=data_domain,
         )

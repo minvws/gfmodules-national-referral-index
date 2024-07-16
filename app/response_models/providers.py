@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import BaseModel, field_validator, field_serializer
 
-from app.data import ProviderID, Pseudonym, DataDomain
+from app.data import UraNumber, Pseudonym, DataDomain
 
 class ProviderRequest(BaseModel):
     pseudonym: Pseudonym
@@ -20,13 +20,13 @@ class ProviderRequest(BaseModel):
 
 
 class Provider(BaseModel):
-    provider_id: ProviderID
+    ura_number: UraNumber
     pseudonym: Pseudonym
     data_domain: DataDomain
 
-    @field_serializer('provider_id')
-    def serialize_pi(self, provider_id: ProviderID) -> str:
-        return str(provider_id)
+    @field_serializer('ura_number')
+    def serialize_pi(self, ura_number: UraNumber) -> str:
+        return str(ura_number)
 
     @field_serializer('data_domain')
     def serialize_dd(self, data_domain: DataDomain, _info: Any) -> str:

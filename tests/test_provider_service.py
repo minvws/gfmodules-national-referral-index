@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app.config import set_config
-from app.data import ProviderID, Pseudonym, DataDomain
+from app.data import UraNumber, Pseudonym, DataDomain
 from app.response_models.providers import Provider
 from app.services.provider_service import ProviderService
 from app.db.db import Database
@@ -28,7 +28,7 @@ class ProviderServiceTest(TestCase):
     def test_get_provider_by_domain_and_name(self) -> None:
         # arrange
         mock_provider = Provider(
-            provider_id=ProviderID("12345"),
+            ura_number=UraNumber("12345"),
             pseudonym=Pseudonym("6d87d96a-cb78-4f5c-823b-578095da2c4a"),
             data_domain=DataDomain.BeeldBank
         )
@@ -37,7 +37,7 @@ class ProviderServiceTest(TestCase):
         self.provider_service.add_one_provider(
             pseudonym=mock_provider.pseudonym,
             data_domain=mock_provider.data_domain,
-            provider_id=mock_provider.provider_id,
+            ura_number=mock_provider.ura_number,
         )
         actual_providers = self.provider_service.get_providers_by_domain_and_pseudonym(
             pseudonym=mock_provider.pseudonym, data_domain=mock_provider.data_domain
@@ -45,6 +45,6 @@ class ProviderServiceTest(TestCase):
 
         # assert
         for provider in actual_providers:
-            self.assertEquals(provider.provider_id, mock_provider.provider_id)
+            self.assertEquals(provider.ura_number, mock_provider.ura_number)
             self.assertEquals(provider.pseudonym, mock_provider.pseudonym)
             self.assertEquals(provider.data_domain, mock_provider.data_domain)

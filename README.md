@@ -44,7 +44,7 @@ title: Localization Register
 classDiagram
     class Provider {
         + String pseudonym
-        + UUID provider_id
+        + UUID ura_number
         + String domain_name
     }
 ```

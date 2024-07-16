@@ -2,7 +2,7 @@ from typing import Sequence
 
 from sqlalchemy import select, insert
 
-from app.data import ProviderID, DataDomain, Pseudonym
+from app.data import UraNumber, DataDomain, Pseudonym
 from app.db.decorator import repository
 from app.db.models.providerentity import ProviderEntity
 from app.db.repository.respository_base import RepositoryBase
@@ -23,9 +23,9 @@ class ProviderRepository(RepositoryBase):
         )
         return self.db_session.execute(stmt).scalars().all()    # type: ignore
 
-    def add_one(self, pseudonym: Pseudonym, data_domain: DataDomain, provider_id: ProviderID) -> None:
+    def add_one(self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber) -> None:
         stmt = insert(ProviderEntity).values(
-            pseudonym=str(pseudonym), data_domain=str(data_domain), provider_id=str(provider_id)
+            pseudonym=str(pseudonym), data_domain=str(data_domain), ura_number=str(ura_number)
         )
         self.db_session.execute(stmt)
         self.db_session.commit()
