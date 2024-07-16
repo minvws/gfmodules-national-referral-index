@@ -69,7 +69,8 @@ def setup_fastapi() -> FastAPI:
     fastapi = (
         FastAPI(
             docs_url=config.uvicorn.docs_url,
-            redoc_url=config.uvicorn.redoc_url
+            redoc_url=config.uvicorn.redoc_url,
+            title="Localisation API",
         ) if config.uvicorn.swagger_enabled else FastAPI(
             docs_url=None,
             redoc_url=None

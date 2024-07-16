@@ -4,7 +4,7 @@ from sqlalchemy import String
 from app.db.models.base import Base
 
 
-class Provider(Base):
+class ProviderEntity(Base):
     __tablename__ = 'providers'
 
     provider_id: Mapped[str] = mapped_column("provider_id", String, primary_key=True)

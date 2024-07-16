@@ -1,7 +1,8 @@
 from unittest import TestCase
 
 from app.config import set_config
-from app.db.models.provider import Provider
+from app.data import ProviderID, Pseudonym, DataDomain
+from app.response_models.providers import Provider
 from app.services.provider_service import ProviderService
 from app.db.db import Database
 from test_config import get_test_config
@@ -27,7 +28,9 @@ class ProviderServiceTest(TestCase):
     def test_get_provider_by_domain_and_name(self) -> None:
         # arrange
         mock_provider = Provider(
-            provider_id="12345", pseudonym="pseudonym", data_domain="domain"
+            provider_id=ProviderID("12345"),
+            pseudonym=Pseudonym("6d87d96a-cb78-4f5c-823b-578095da2c4a"),
+            data_domain=DataDomain.BeeldBank
         )
 
         # act
