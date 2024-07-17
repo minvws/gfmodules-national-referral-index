@@ -1,8 +1,10 @@
-from typing import Sequence
+from typing import List
 
-from app.db.models.provider import Provider
+from app.data import Pseudonym, DataDomain, UraNumber
 from app.db.db import Database
+from app.db.models.providerentity import ProviderEntity
 from app.db.repository.provider_repository import ProviderRepository
+from app.response_models.providers import Provider
 
 
 class ProviderService:
@@ -10,21 +12,34 @@ class ProviderService:
         self.database = database
 
     def get_providers_by_domain_and_pseudonym(
-        self, pseudonym: str, data_domain: str
-    ) -> Sequence[Provider]:
+        self, pseudonym: Pseudonym, data_domain: DataDomain
+    ) -> List[Provider]:
         """
         Method that gets all the providers by pseudonym and data domain
         """
         with self.database.get_db_session() as session:
             provider_repository = session.get_repository(ProviderRepository)
-            results = provider_repository.find_many_providers(pseudonym, data_domain)
-            return results
+            entities = provider_repository.find_many_providers(pseudonym, data_domain)
+
+            return [self.hydrate_provider(entity) for entity in entities]
 
     def add_one_provider(
-        self, pseudonym: str, data_domain: str, provider_id: str
+        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber
     ) -> None:
         with self.database.get_db_session() as session:
             provider_repository = session.get_repository(ProviderRepository)
             provider_repository.add_one(
-                pseudonym=pseudonym, data_domain=data_domain, provider_id=provider_id
+                pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
             )
+
+    @staticmethod
+    def hydrate_provider(entity: ProviderEntity) -> Provider:
+        data_domain = DataDomain.from_str(entity.data_domain)
+        if data_domain is None:
+            raise ValueError("Invalid data domain")
+
+        return Provider(
+            ura_number=UraNumber(entity.ura_number),
+            pseudonym=Pseudonym(entity.pseudonym),
+            data_domain=data_domain,
+        )
