@@ -1,26 +1,26 @@
 -- Mock: 950000012: 5afda8a1-dce9-43f8-b1af-c4dc765e7e17
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'irealisatie.mock.metadata', 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', 'irealisatie.mock.metadata.unavailable', 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', '23665292', 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('5afda8a1-dce9-43f8-b1af-c4dc765e7e17', '13873620', 'beeldbank');
 
 
 -- Mock: 950000024: cb5d785e-6710-4910-963f-39c85b39e491
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('cb5d785e-6710-4910-963f-39c85b39e491', 'ziekenhuis.amsterdam@medmij' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('cb5d785e-6710-4910-963f-39c85b39e491', '10258861' , 'beeldbank');
 
 -- Mock: 950000036: c41ef88d-9d06-4a81-9df8-a2b0f9534ab9
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', 'ziekenhuis.amsterdam@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', 'ziekenhuis.apeldoorn@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', 'huisarts.apeldoorn@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', 'fysio.deventetr@medmij' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', '10258861' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', '13339380' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', '69113161' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('c41ef88d-9d06-4a81-9df8-a2b0f9534ab9', '54448949' , 'beeldbank');
 
 -- Mock: 950000048: 48521bd8-26a9-47d3-badc-c0190263c087
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', 'ziekenhuis.groningen@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', 'huisarts.groningen@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', 'huisarts.groningen@medmij' , 'test resultaten');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', 'huisarts.groningen@medmij' , 'medicatie');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', '00000007' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', '78356561' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', '78356561' , 'test resultaten');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('48521bd8-26a9-47d3-badc-c0190263c087', '78356561' , 'medicatie');
 
 -- Mock: 950000061: d8ee4fb0-e0e3-4a31-9255-2d140f86762e
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', 'ziekenhuis.denbosch@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', 'ziekenhuis.tilburg@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', 'ziekenhuis.eindhoven@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', 'huisarts.eindhoven@medmij' , 'beeldbank');
-INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', 'huisarts.tilburg@medmij' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', '00000009' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', '74604482' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', '69092583' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', '28631171' , 'beeldbank');
+INSERT INTO public.providers (pseudonym, ura_number, data_domain) VALUES ('d8ee4fb0-e0e3-4a31-9255-2d140f86762e', '90899169' , 'beeldbank');
