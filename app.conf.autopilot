@@ -15,6 +15,12 @@ endpoint = http://tracing:4317
 service_name = Nationale Verwijsindex
 tracer_name = zmodules.service.national_referral_index
 
+[stats]
+enabled = True
+host = graphite
+port = 8125
+module_name = localisation
+
 [uvicorn]
 swagger_enabled = True
 docs_url = /docs
