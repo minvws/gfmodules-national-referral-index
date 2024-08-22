@@ -1,10 +1,15 @@
 import logging
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.exceptions import HTTPException
 from opentelemetry import trace
+import textwrap
+
+from uzireader.uziserver import UziServer
 
 from app import container
+from app.authentication import authenticated_ura
+from app.data import UraNumber
 from app.services.provider_service import ProviderService
 from app.response_models.providers import ProviderRequest, Provider
 
@@ -20,8 +25,10 @@ router = APIRouter(
     response_model=List[Provider],
 )
 def get_providers_info(
+    request: Request,
     req: ProviderRequest,
     provider_service: ProviderService = Depends(container.get_provider_service),
+    _: UraNumber = Depends(authenticated_ura)
 ) -> List[Provider]:
     """
     Searches for providers by pseudonym and data domain
@@ -40,3 +47,4 @@ def get_providers_info(
     span.set_attribute("data.providers", str(providers))
 
     return providers
+

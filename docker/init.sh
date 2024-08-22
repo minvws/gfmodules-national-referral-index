@@ -15,11 +15,7 @@ echo "Waiting for db container to finish startup"
 sleep $DB_STARTUP_WAIT
 
 echo "➡️ Generating TLS certificates"
-if [ -e secrets/ssl/server.key ] && [ -e secrets/ssl/server.cert ]; then
-    echo "⚠️ TLS certificates already exist. Skipping."
-else
-    ./tools/generate_certs.sh
-fi
+./tools/generate_certs.sh
 
 echo "➡️ Creating the configuration file"
 if [ -e app.conf ]; then
