@@ -10,6 +10,7 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - ./:/src
+      - ./secrets:/src/secrets
     ports:
       - 8501:8501
     healthcheck:
@@ -23,7 +24,7 @@ services:
     networks:
       zmodules:
         aliases:
-          - localisation
+          - localization-app
 
   app_ssl:
     image: httpd
@@ -40,7 +41,7 @@ services:
     networks:
       zmodules:
         aliases:
-          - localisation_ssl
+          - localization
 
   localisation_db:
     image: postgres:14
@@ -57,3 +58,8 @@ networks:
   zmodules:
     driver: bridge
     name: zmodules
+
+
+volumes:
+  secrets:
+    name: secrets2

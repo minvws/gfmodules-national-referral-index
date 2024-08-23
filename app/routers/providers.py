@@ -3,9 +3,6 @@ from typing import List
 from fastapi import APIRouter, Depends, Request
 from fastapi.exceptions import HTTPException
 from opentelemetry import trace
-import textwrap
-
-from uzireader.uziserver import UziServer
 
 from app import container
 from app.authentication import authenticated_ura

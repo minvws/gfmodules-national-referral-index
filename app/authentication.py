@@ -8,10 +8,9 @@ from app.data import UraNumber
 
 
 def authenticated_ura(request: Request) -> UraNumber:
+    if "x-proxy-ssl_client_cert" not in request.headers:
+        raise HTTPException(status_code=401, detail="Missing client certificate")
     cert = request.headers["x-proxy-ssl_client_cert"]
-    if not cert:
-        raise HTTPException(status_code=401)
-
     formatted_cert = enforce_cert_newlines(cert)
     uzi_server = UziServer(verify="SUCCESS", cert=formatted_cert)
     return UraNumber(uzi_server["SubscriberNumber"])
