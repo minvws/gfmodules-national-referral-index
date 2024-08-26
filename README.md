@@ -15,6 +15,10 @@ can take a look at the initialisation steps in `docker/init.sh`.
 
 The preferred way to run the application is through docker.
 
+Before you start this docker compose project, make sure you have the gfmodules-coordination docker compose
+project running. For more information about setting up the whole project stack, read the gfmodules development
+[readme](https://github.com/minvws/gfmodules-coordination?tab=readme-ov-file#development)
+
 If you run Linux, make sure you export your user ID and group ID to synchronize permissions with the Docker user.
 
 ```
