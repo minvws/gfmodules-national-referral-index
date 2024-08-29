@@ -19,6 +19,27 @@ class ProviderRequest(BaseModel):
         return DataDomain(val)
 
 
+class CreateProviderRequest(BaseModel):
+    pseudonym: Pseudonym
+    data_domain: DataDomain
+    ura_number: UraNumber
+
+    @field_validator('pseudonym', mode='before')
+    @classmethod
+    def serialize_pseudo(cls, val: str) -> Pseudonym:
+        return Pseudonym(val)
+
+    @field_validator('data_domain', mode='before')
+    @classmethod
+    def serialize_dd(cls, val: str) -> DataDomain:
+        return DataDomain(val)
+
+    @field_validator('ura_number', mode='before')
+    @classmethod
+    def serialize_ura(cls, val: str) -> UraNumber:
+        return UraNumber(val)
+
+
 class Provider(BaseModel):
     ura_number: UraNumber
     pseudonym: Pseudonym
