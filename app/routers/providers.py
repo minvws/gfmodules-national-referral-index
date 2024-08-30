@@ -1,14 +1,16 @@
 import logging
 from typing import List
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
 from opentelemetry import trace
 
 from app import container
 from app.authentication import authenticated_ura
+from app.config import get_config
 from app.data import UraNumber
 from app.services.provider_service import ProviderService
-from app.response_models.providers import ProviderRequest, Provider
+from app.response_models.providers import ProviderRequest, Provider, CreateProviderRequest
+from app.services.pseudonym_service import PseudonymService
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -22,9 +24,9 @@ router = APIRouter(
     response_model=List[Provider],
 )
 def get_providers_info(
-    request: Request,
     req: ProviderRequest,
     provider_service: ProviderService = Depends(container.get_provider_service),
+    pseudonym_service: PseudonymService = Depends(container.get_pseudonym_service),
     _: UraNumber = Depends(authenticated_ura)
 ) -> List[Provider]:
     """
@@ -33,8 +35,9 @@ def get_providers_info(
     span = trace.get_current_span()
     span.update_name(f"POST /info pseudonym={str(req.pseudonym)} data_domain={str(req.data_domain)}")
 
+    localisation_pseudonym = pseudonym_service.exchange(req.pseudonym, get_config().app.provider_id)
     providers = provider_service.get_providers_by_domain_and_pseudonym(
-        pseudonym=req.pseudonym, data_domain=req.data_domain
+        pseudonym=localisation_pseudonym, data_domain=req.data_domain
     )
     span.set_attribute("data.providers_found", len(providers))
 
@@ -45,3 +48,27 @@ def get_providers_info(
 
     return providers
 
+
+@router.post(
+    "/create",
+    summary="Creates a provider",
+    response_model=Provider,
+)
+def create_provider(
+    req: CreateProviderRequest,
+    provider_service: ProviderService = Depends(container.get_provider_service),
+    pseudonym_service: PseudonymService = Depends(container.get_pseudonym_service),
+) -> Provider:
+    """
+    Creates a provider
+    """
+    span = trace.get_current_span()
+    span.update_name(f"POST /create pseudonym={str(req.pseudonym)} data_domain={str(req.data_domain)}, ura_number={str(req.ura_number)}")
+
+    localisation_pseudonym = pseudonym_service.exchange(req.pseudonym, get_config().app.provider_id)
+    provider = provider_service.add_one_provider(
+        pseudonym=localisation_pseudonym, data_domain=req.data_domain, ura_number=req.ura_number
+    )
+    span.set_attribute("data.provider", str(provider))
+
+    return provider

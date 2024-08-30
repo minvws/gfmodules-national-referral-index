@@ -4,10 +4,14 @@ from fastapi import HTTPException
 from starlette.requests import Request
 from uzireader.uziserver import UziServer
 
+from app.config import get_config
 from app.data import UraNumber
 
 
 def authenticated_ura(request: Request) -> UraNumber:
+    if get_config().app.override_authentication_ura:
+        return UraNumber(get_config().app.override_authentication_ura)
+
     if "x-proxy-ssl_client_cert" not in request.headers:
         raise HTTPException(status_code=401, detail="Missing client certificate")
     cert = request.headers["x-proxy-ssl_client_cert"]
