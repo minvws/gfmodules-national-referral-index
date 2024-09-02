@@ -25,12 +25,18 @@ class ProviderService:
 
     def add_one_provider(
         self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber
-    ) -> None:
+    ) -> Provider:
         with self.database.get_db_session() as session:
             provider_repository = session.get_repository(ProviderRepository)
             provider_repository.add_one(
                 pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
             )
+
+        return Provider(
+            ura_number=ura_number,
+            pseudonym=pseudonym,
+            data_domain=data_domain
+        )
 
     @staticmethod
     def hydrate_provider(entity: ProviderEntity) -> Provider:

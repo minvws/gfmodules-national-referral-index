@@ -4,10 +4,14 @@ from starlette.requests import Request
 from uzireader.uziserver import UziServer
 
 from app.authentication import authenticated_ura, enforce_cert_newlines
+from app.config import set_config
 from app.data import UraNumber
+from tests.test_config import get_test_config
 
 
 def test_authenticated_ura(mocker):
+    set_config(get_test_config())
+
     request = mocker.MagicMock(spec=Request)
     request.headers = {
         "x-proxy-ssl_client_cert": "cert-content"
