@@ -7,7 +7,7 @@ def get_test_config() -> Config:
         app=ConfigApp(
             loglevel=LogLevel.error,
             provider_id="84de3f9c-0113-4fbb-af4b-215715e631bd",
-            override_authentication_ura=False,
+            override_authentication_ura=None,
         ),
         database=ConfigDatabase(
             dsn="sqlite:///:memory:",
