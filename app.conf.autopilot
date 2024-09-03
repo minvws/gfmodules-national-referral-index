@@ -1,7 +1,7 @@
 [app]
 loglevel=debug
-provider_id=b3be0b18-d071-44d6-89a1-faf379b67761
-override_authentication_ura=12345678
+provider_id=dcc2217b-600e-4587-b74a-6b04bf3a882b
+override_authentication_ura=False
 
 [pseudonym_api]
 endpoint=http://pseudonym:8504
