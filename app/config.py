@@ -20,7 +20,7 @@ class LogLevel(str, Enum):
 class ConfigApp(BaseModel):
     loglevel: LogLevel = Field(default=LogLevel.info)
     provider_id: str
-    override_authentication_ura: str|bool = Field(default=False)
+    override_authentication_ura: str | None
 
 
 class ConfigDatabase(BaseModel):
