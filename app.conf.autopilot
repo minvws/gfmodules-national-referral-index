@@ -1,5 +1,14 @@
 [app]
 loglevel=debug
+provider_id=dcc2217b-600e-4587-b74a-6b04bf3a882b
+override_authentication_ura=False
+
+[pseudonym_api]
+endpoint=http://pseudonym:8504
+timeout=10
+# mtls_cert=secrets/ssl/pseudonym_api.cert
+# mtls_key=secrets/ssl/pseudonym_api.key
+# mtls_ca=secrets/ssl/pseudonym_api_ca.cert
 
 [database]
 dsn=postgresql+psycopg://postgres:postgres@localisation_db:5432/postgres

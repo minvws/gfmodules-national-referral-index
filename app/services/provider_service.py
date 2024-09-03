@@ -38,7 +38,6 @@ class ProviderService:
             data_domain=data_domain,
         )
 
-
     @staticmethod
     def hydrate_provider(entity: ProviderEntity) -> Provider:
         data_domain = DataDomain.from_str(entity.data_domain)

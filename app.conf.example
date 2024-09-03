@@ -1,6 +1,18 @@
 [app]
 # Loglevel can be one of: debug, info, warning, error, critical
 loglevel=debug
+# Provider ID of this service
+provider_id=dcc2217b-600e-4587-b74a-6b04bf3a882b
+# Override authentication URA for testing, or False when using the URA from the MTLS certificate
+override_authentication_ura=False
+# override_authentication_ura=12345678
+
+[pseudonym_api]
+endpoint=http://localhost:8504
+timeout=10
+# mtls_cert=secrets/ssl/pseudonym_api.cert
+# mtls_key=secrets/ssl/pseudonym_api.key
+# mtls_ca=secrets/ssl/pseudonym_api_ca.cert
 
 [database]
 # Dsn for database connection

@@ -23,7 +23,7 @@ class ProviderServiceTest(TestCase):
         db_connection_valid = self.db.is_healthy()
 
         # assert
-        self.assertEquals(db_connection_valid, True)
+        self.assertEqual(db_connection_valid, True)
 
     def test_get_provider_by_domain_and_name(self) -> None:
         # arrange
@@ -45,6 +45,6 @@ class ProviderServiceTest(TestCase):
 
         # assert
         for provider in actual_providers:
-            self.assertEquals(provider.ura_number, mock_provider.ura_number)
-            self.assertEquals(provider.pseudonym, mock_provider.pseudonym)
-            self.assertEquals(provider.data_domain, mock_provider.data_domain)
+            self.assertEqual(provider.ura_number, mock_provider.ura_number)
+            self.assertEqual(provider.pseudonym, mock_provider.pseudonym)
+            self.assertEqual(provider.data_domain, mock_provider.data_domain)
