@@ -17,7 +17,7 @@ jobs:
           echo "PKG_NAME=`basename $GITHUB_REPOSITORY -private`" >> $GITHUB_ENV
 
       - name: Build venv package
-        uses: minvws/nl-irealisatie-generic-pipelines/.github/actions/python-venv-package@split-vcs-deps-requirements
+        uses: minvws/nl-irealisatie-generic-pipelines/.github/actions/python-venv-package@main
         with:
           python_version: ${{ matrix.python_version }}
           package_file_name: ${{ env.PKG_NAME }}
