@@ -35,7 +35,7 @@ class ProviderService:
         return Provider(
             ura_number=ura_number,
             pseudonym=pseudonym,
-            data_domain=data_domain
+            data_domain=data_domain,
         )
 
     @staticmethod

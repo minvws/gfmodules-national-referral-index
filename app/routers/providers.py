@@ -65,9 +65,8 @@ def create_provider(
     span = trace.get_current_span()
     span.update_name(f"POST /create pseudonym={str(req.pseudonym)} data_domain={str(req.data_domain)}, ura_number={str(req.ura_number)}")
 
-    localisation_pseudonym = pseudonym_service.exchange(req.pseudonym, get_config().app.provider_id)
     provider = provider_service.add_one_provider(
-        pseudonym=localisation_pseudonym, data_domain=req.data_domain, ura_number=req.ura_number
+        pseudonym=req.pseudonym, data_domain=req.data_domain, ura_number=req.ura_number
     )
     span.set_attribute("data.provider", str(provider))
 
