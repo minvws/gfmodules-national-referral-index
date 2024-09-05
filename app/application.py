@@ -9,7 +9,7 @@ from app.stats import StatsdMiddleware, setup_stats
 from app.telemetry import setup_telemetry
 from app.routers.default import router as default_router
 from app.routers.health import router as health_router
-from app.routers.providers import router as provider_router
+from app.routers.referrals import router as referral_router
 from app.config import get_config
 
 
@@ -83,7 +83,7 @@ def setup_fastapi() -> FastAPI:
         )
     )
 
-    routers = [default_router, health_router, provider_router]
+    routers = [default_router, health_router, referral_router]
     for router in routers:
         fastapi.include_router(router)
 

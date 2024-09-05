@@ -37,7 +37,7 @@ The application will be available at https://localhost:8501 when the startup is 
 title: Localization Register
 ---
 classDiagram
-    class Provider {
+    class ReferralEntry {
         + String pseudonym
         + UUID ura_number
         + String domain_name

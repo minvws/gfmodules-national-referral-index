@@ -4,7 +4,7 @@ from pydantic import BaseModel, field_validator, field_serializer
 
 from app.data import UraNumber, Pseudonym, DataDomain
 
-class ProviderRequest(BaseModel):
+class ReferralRequest(BaseModel):
     pseudonym: Pseudonym
     data_domain: DataDomain
 
@@ -19,7 +19,7 @@ class ProviderRequest(BaseModel):
         return DataDomain(val)
 
 
-class CreateProviderRequest(BaseModel):
+class CreateReferralRequest(BaseModel):
     pseudonym: Pseudonym
     data_domain: DataDomain
     ura_number: UraNumber
@@ -40,7 +40,7 @@ class CreateProviderRequest(BaseModel):
         return UraNumber(val)
 
 
-class Provider(BaseModel):
+class ReferralEntry(BaseModel):
     ura_number: UraNumber
     pseudonym: Pseudonym
     data_domain: DataDomain
