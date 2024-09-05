@@ -2,7 +2,7 @@
 import inject
 from app.db.db import Database
 from app.config import get_config
-from app.services.provider_service import ProviderService
+from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
 
 
@@ -12,10 +12,10 @@ def container_config(binder: inject.Binder) -> None:
     db = Database(dsn=config.database.dsn)
     binder.bind(Database, db)
 
-    provider_service = ProviderService(
+    referral_service = ReferralService(
         database=db
     )
-    binder.bind(ProviderService, provider_service)
+    binder.bind(ReferralService, referral_service)
 
     pseudonym_service = PseudonymService(
         endpoint=config.pseudonym_api.endpoint,
@@ -31,8 +31,8 @@ def get_database() -> Database:
     return inject.instance(Database)
 
 
-def get_provider_service() -> ProviderService:
-    return inject.instance(ProviderService)
+def get_referral_service() -> ReferralService:
+    return inject.instance(ReferralService)
 
 
 def get_pseudonym_service() -> PseudonymService:
