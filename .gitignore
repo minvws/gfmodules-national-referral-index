@@ -7,3 +7,5 @@ secrets/
 *.priv
 *.pub
 coverage.xml
+.venv
+.vscode

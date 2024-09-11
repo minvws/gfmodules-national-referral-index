@@ -64,9 +64,14 @@ def create_referral(
     span = trace.get_current_span()
     span.update_name(f"POST /create pseudonym={str(req.pseudonym)} data_domain={str(req.data_domain)}, ura_number={str(req.ura_number)}")
 
-    referral = referral_service.add_one_referral(
+    referral: ReferralEntry = referral_service.add_one_referral(
         pseudonym=req.pseudonym, data_domain=req.data_domain, ura_number=req.ura_number
     )
+    
+    
+    # Add logging request here
+    
+
     span.set_attribute("data.referral", str(referral))
 
     return referral
