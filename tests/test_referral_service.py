@@ -37,6 +37,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
+            uzi_number='testuzinumber'
         )
 
     def test_add_referral_duplicate(self) -> None:
@@ -52,6 +53,7 @@ class ReferralServiceTest(TestCase):
                     pseudonym=mock_referral.pseudonym,
                     data_domain=mock_referral.data_domain,
                     ura_number=mock_referral.ura_number,
+                    uzi_number='testuzinumber'
                 )
         self.assertEqual(context.exception.status_code, 409)
 
@@ -96,6 +98,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
+            uzi_number='testuzinumber'
         )
         actual_referrals = self.referral_service.get_referrals_by_domain_and_pseudonym(
             pseudonym=mock_referral.pseudonym, data_domain=mock_referral.data_domain
@@ -136,6 +139,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
+            uzi_number='testuzinumber'
         )
         actual_referrals = self.referral_service.query_referrals(
             pseudonym=mock_referral.pseudonym, ura_number=mock_referral.ura_number, data_domain=None
@@ -154,6 +158,7 @@ class ReferralServiceTest(TestCase):
         )
 
         self.referral_service.add_one_referral(
+            uzi_number='testuzi_number',
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
@@ -169,6 +174,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral_2.pseudonym,
             data_domain=mock_referral_2.data_domain,
             ura_number=mock_referral_2.ura_number,
+            uzi_number='testuzi_number',
         )
 
         actual_referrals = self.referral_service.query_referrals(

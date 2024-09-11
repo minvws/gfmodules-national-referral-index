@@ -6,9 +6,11 @@ from app.db.models.base import Base
 class ReferralRequestLogEntry(Base):
     __tablename__ = 'referral_request_logs'
 
-    ura_number: Mapped[str] = mapped_column("ura_number", String, primary_key=True)
-    pseudonym: Mapped[str] = mapped_column("pseudonym", String, primary_key=True)
-    data_domain: Mapped[str] = mapped_column("data_domain", String, primary_key=True)
+    id: Mapped[int] = mapped_column("id", primary_key=True, autoincrement=True)
+
+    ura_number: Mapped[str] = mapped_column("ura_number", String)
+    pseudonym: Mapped[str] = mapped_column("pseudonym", String)
+    data_domain: Mapped[str] = mapped_column("data_domain", String)
     requesting_uzi_number: Mapped[str] = mapped_column("requesting_uzi_number", String)
 
     def __repr__(self) -> str:
