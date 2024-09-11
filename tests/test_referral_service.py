@@ -38,6 +38,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
+            uzi_number='testuzinumber'
         )
         actual_referrals = self.referral_service.get_referrals_by_domain_and_pseudonym(
             pseudonym=mock_referral.pseudonym, data_domain=mock_referral.data_domain
