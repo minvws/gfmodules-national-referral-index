@@ -1,7 +1,6 @@
 .coverage
 __pycache__
 app.conf
-secrets/
 *.crt
 *.key
 *.priv
