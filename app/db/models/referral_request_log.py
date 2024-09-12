@@ -14,4 +14,4 @@ class ReferralRequestLogEntry(Base):
     requesting_uzi_number: Mapped[str] = mapped_column("requesting_uzi_number", String)
 
     def __repr__(self) -> str:
-        return f"<ReferralEntity(ura_number={self.ura_number}, pseudonym={self.pseudonym}, data_domain={self.pseudonym})"
+        return f"<ReferralEntity(ura_number={self.ura_number}, pseudonym={self.pseudonym}, data_domain={self.data_domain})"
