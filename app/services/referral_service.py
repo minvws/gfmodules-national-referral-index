@@ -5,7 +5,7 @@ from app.data import Pseudonym, DataDomain, UraNumber
 from app.db.db import Database
 from app.db.models.referral import ReferralEntity
 from app.db.repository.referral_repository import ReferralRepository
-from app.referral_request_database_logger import ReferralRequestDatabaseLogger
+from app.logging.referral_request_database_logger import ReferralRequestDatabaseLogger
 from app.referral_request_payload import ReferrralLoggingPayload
 from app.response_models.referrals import ReferralEntry
 
