@@ -28,7 +28,7 @@ class ReferralService:
             return [self.hydrate_referral(entity) for entity in entities]
 
     def add_one_referral(
-        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber, uzi_number: str
+        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber, uzi_number: str, 
     ) -> ReferralEntry:
         """
         Method that adds a referral to the database
@@ -37,6 +37,7 @@ class ReferralService:
             referral_repository = session.get_repository(ReferralRepository)
             logging_payload = ReferrralLoggingPayload(ura_number=ura_number, pseudonym=pseudonym, data_domain=data_domain, requesting_uzi_number=uzi_number)
             
+            # Use dependency injection later on
             logger = ReferralRequestDatabaseLogger(session)
             logger.log(logging_payload)
 
