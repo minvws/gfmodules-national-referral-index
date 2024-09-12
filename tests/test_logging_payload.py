@@ -1,8 +1,9 @@
+import uuid
 from app.data import DataDomain, Pseudonym, UraNumber
 from app.referral_request_payload import ReferrralLoggingPayload
 from app.response_models.referrals import ReferralEntry
 
-TESTING_PSEUNONYM = Pseudonym('ea0b4ecf8d46479880a533252db21f1a')
+TESTING_PSEUNONYM = Pseudonym(uuid.uuid4())
 TESTING_URA = UraNumber(123)
 
 TESTING_DOMAIN = DataDomain.BeeldBank
