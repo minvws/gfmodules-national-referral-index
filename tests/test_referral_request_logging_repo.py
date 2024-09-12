@@ -10,6 +10,8 @@ from app.referral_request_payload import ReferrralLoggingPayload
 from app.response_models.referrals import ReferralEntry
 from tests.test_config import get_test_config
 
+from sqlalchemy import select, func
+
 
 TESTING_PSEUNONYM = Pseudonym('ea0b4ecf8d46479880a533252db21f1a')
 TESTING_URA = UraNumber(123)
@@ -35,6 +37,7 @@ class ReferralRequestLoggingRepositoryTest(TestCase):
         repo = ReferralRequestLoggingRepository(self._session)
         repo.add_one(logging_payload)
         
-        count = self._session.session.query(ReferralRequestLogEntry).count()
+        statement = select(func.count(ReferralRequestLogEntry.id))
+        count = self._session.session.execute(statement).scalar()
         
         assert count == 1
