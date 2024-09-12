@@ -38,6 +38,7 @@ class ReferralService:
             logging_payload = ReferrralLoggingPayload(ura_number=ura_number, pseudonym=pseudonym, data_domain=data_domain, requesting_uzi_number=uzi_number)
             
             # Use dependency injection later on
+            # Inject interface with DI when shared package is used (https://github.com/minvws/gfmodules-national-referral-index/issues/42)
             logger = ReferralRequestDatabaseLogger(session)
             logger.log(logging_payload)
 
