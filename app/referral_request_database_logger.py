@@ -10,8 +10,6 @@ class ReferralRequestDatabaseLogger(ReferralRequestLogger):
     def __init__(self, database_session: DbSession) -> None:
         self._database_session = database_session
     
-    def log(self, referral: ReferrralLoggingPayload) -> bool:
+    def log(self, referral: ReferrralLoggingPayload) -> None:
         repo = ReferralRequestLoggingRepository(self._database_session)
         repo.add_one(referral)
-        
-        return True
