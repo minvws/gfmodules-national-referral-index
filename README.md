@@ -8,7 +8,7 @@ to the register that associates a Health Provider with pseudonym and data domain
 
 The application is a FastAPI application, so you can use the FastAPI documentation to see how to use the application.
 
-## Development
+## Getting started
 
 You can either run the application natively or in a docker container. If you want to run the application natively you
 can take a look at the initialisation steps in `docker/init.sh`. 
@@ -42,4 +42,11 @@ classDiagram
         + UUID ura_number
         + String domain_name
     }
+```
+
+## Contribution
+When starting to introduce changes, it is important to leave user specific files such as IDE or text-editor settings outside the repository. For this, create an local `.gitignore` file and configure git like below.
+
+```bash
+git config --global core.excludesfile ~/.gitignore
 ```

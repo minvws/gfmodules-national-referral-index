@@ -5,6 +5,8 @@ from app.data import Pseudonym, DataDomain, UraNumber
 from app.db.db import Database
 from app.db.models.referral import ReferralEntity
 from app.db.repository.referral_repository import ReferralRepository
+from app.logging.referral_request_database_logger import ReferralRequestDatabaseLogger
+from app.referral_request_payload import ReferrralLoggingPayload
 from app.response_models.referrals import ReferralEntry
 
 
@@ -26,13 +28,19 @@ class ReferralService:
             return [self.hydrate_referral(entity) for entity in entities]
 
     def add_one_referral(
-        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber
+        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber, uzi_number: str, 
     ) -> ReferralEntry:
         """
         Method that adds a referral to the database
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
+            logging_payload = ReferrralLoggingPayload(ura_number=ura_number, pseudonym=pseudonym, data_domain=data_domain, requesting_uzi_number=uzi_number)
+            
+            # Inject interface with DI when shared package is used (https://github.com/minvws/gfmodules-national-referral-index/issues/42)
+            audit_logger = ReferralRequestDatabaseLogger(session)
+            audit_logger.log(logging_payload)
+
             if referral_repository.find_one(pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number) is None:
                 referral_entity = ReferralEntity(
                     pseudonym=str(pseudonym),

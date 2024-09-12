@@ -23,6 +23,7 @@ class CreateReferralRequest(BaseModel):
     pseudonym: Pseudonym
     data_domain: DataDomain
     ura_number: UraNumber
+    requesting_uzi_number: str
 
     @field_validator('pseudonym', mode='before')
     @classmethod
