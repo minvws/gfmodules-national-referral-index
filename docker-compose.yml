@@ -18,7 +18,9 @@ services:
       retries: 5
       start_period: 5s
     depends_on:
-      - localisation_db
+      localisation_db:
+        condition: service_healthy
+        restart: true
     networks:
       zmodules:
         aliases:
@@ -47,6 +49,11 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --user postgres"]
+      interval: 5s
+      retries: 5
+    restart: always
     ports:
       - 5401:5432
     networks:
