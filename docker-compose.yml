@@ -50,7 +50,8 @@ services:
       POSTGRES_PASSWORD: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready --user postgres"]
-      interval: 5s
+      start_period: 10s
+      start_interval: 1s
       retries: 5
     restart: always
     ports:
