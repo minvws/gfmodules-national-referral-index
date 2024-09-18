@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, field_validator, field_serializer
 
@@ -60,21 +60,21 @@ class ReferralEntry(BaseModel):
     @field_serializer('pseudonym')
     def serialize_ps(self, pseudonym: Pseudonym, _info: Any) -> str:
         return str(pseudonym)
-
+    
 class ReferralQuery(BaseModel):
-    pseudonym: Pseudonym | None
-    data_domain: DataDomain | None
+    pseudonym: Optional[Pseudonym] = None
+    data_domain: Optional[DataDomain] = None
     ura_number: UraNumber
 
     @field_validator('pseudonym', mode='before')
     @classmethod
-    def serialize_pseudo(cls, val: str) -> Pseudonym:
-        return Pseudonym(val)
+    def serialize_pseudo(cls, val: Optional[str]) -> Optional[Pseudonym]:
+        return None if val is None else Pseudonym(val) 
 
     @field_validator('data_domain', mode='before')
     @classmethod
-    def serialize_dd(cls, val: str) -> DataDomain:
-        return DataDomain(val)
+    def serialize_dd(cls, val: Optional[str]) -> Optional[DataDomain]:
+        return None if val is None else DataDomain(val)
 
     @field_validator('ura_number', mode='before')
     @classmethod
