@@ -9,9 +9,9 @@ subject to change.
 
 ## Context
 
-The GFModules project is a collection of applications that have the purpose to improve the
+The GFModules project is a collection of applications that have the purpose of improving
 data exchange between healthcare providers. This project is the technical implementation of
-the various components of the 'Generieke Functies, lokalisatie en addressering' project of the
+various components of the 'Generieke Functies, lokalisatie en addressering' project from the
 Ministry of Health, Welfare and Sport of the Dutch government.
 
 <div style="page-break-after: always;"></div>
