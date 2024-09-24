@@ -30,6 +30,9 @@ After this you can simply run `docker compose up`.
 
 The application will be available at https://localhost:8501 when the startup is completed.
 
+## Interface Definitions
+See [interface definitions](docs/interface-definitions/README.md)
+
 ## Models
 
 ```mermaid
