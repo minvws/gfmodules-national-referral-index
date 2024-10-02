@@ -47,7 +47,7 @@ class ReferralService:
                 requesting_uzi_number=uzi_number,
                 endpoint="",
                 request_type=ReferralRequestType.CREATE,
-                payload={},
+                payload={"pseudonym": str(pseudonym), "data_domain": str(data_domain)},
             )
 
             # Inject interface with DI when shared package is used (https://github.com/minvws/gfmodules-national-referral-index/issues/42)
