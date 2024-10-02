@@ -1,4 +1,3 @@
-
 from sqlalchemy import insert
 
 from app.db.decorator import repository
@@ -11,7 +10,10 @@ from app.referral_request_payload import ReferrralLoggingPayload
 class ReferralRequestLoggingRepository(RepositoryBase):
     def add_one(self, payload: ReferrralLoggingPayload) -> None:
         stmt = insert(ReferralRequestLogEntry).values(
-            ura_number=str(payload.ura_number), requesting_uzi_number=payload.requesting_uzi_number
+            ura_number=str(payload.ura_number),
+            requesting_uzi_number=payload.requesting_uzi_number,
+            endpoint=payload.endpoint,
+            request_type=str(payload.request_type),
         )
         self.db_session.execute(stmt)
         self.db_session.commit()
