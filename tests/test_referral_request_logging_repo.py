@@ -38,7 +38,7 @@ class ReferralRequestLoggingRepositoryTest(TestCase):
             endpoint="https://test",
             requesting_uzi_number="123",
             ura_number=TESTING_URA,
-            request_type=ReferralRequestType.GET,
+            request_type=ReferralRequestType.CREATE,
             payload={},
         )
 

@@ -46,7 +46,7 @@ class ReferralService:
                 ura_number=ura_number,
                 requesting_uzi_number=uzi_number,
                 endpoint="",
-                request_type=ReferralRequestType.GET,
+                request_type=ReferralRequestType.CREATE,
                 payload={},
             )
 
