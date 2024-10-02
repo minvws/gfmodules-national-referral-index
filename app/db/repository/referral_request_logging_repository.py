@@ -14,6 +14,7 @@ class ReferralRequestLoggingRepository(RepositoryBase):
             requesting_uzi_number=payload.requesting_uzi_number,
             endpoint=payload.endpoint,
             request_type=payload.request_type,
+            payload=payload.payload,
         )
         self.db_session.execute(stmt)
         self.db_session.commit()
