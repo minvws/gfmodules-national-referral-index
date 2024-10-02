@@ -13,7 +13,7 @@ class ReferralRequestLoggingRepository(RepositoryBase):
             ura_number=str(payload.ura_number),
             requesting_uzi_number=payload.requesting_uzi_number,
             endpoint=payload.endpoint,
-            request_type=str(payload.request_type),
+            request_type=payload.request_type,
         )
         self.db_session.execute(stmt)
         self.db_session.commit()
