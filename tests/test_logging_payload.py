@@ -1,12 +1,8 @@
-import uuid
-from app.data import DataDomain, Pseudonym, UraNumber
+from app.data import UraNumber
 from app.referral_request_payload import ReferralLoggingPayload
 from app.referral_request_type import ReferralRequestType
 
-TESTING_PSEUNONYM = Pseudonym(uuid.uuid4())
 TESTING_URA = UraNumber(123)
-
-TESTING_DOMAIN = DataDomain.BeeldBank
 
 
 def test_create():

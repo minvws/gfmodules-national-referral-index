@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app.config import set_config
-from app.data import DataDomain, Pseudonym, UraNumber
+from app.data import UraNumber
 from app.db.db import Database
 from app.db.models.referral_request_log import ReferralRequestLogEntry
 from app.db.repository.referral_request_logging_repository import (
@@ -15,10 +15,7 @@ from tests.test_config import get_test_config
 from sqlalchemy import select, func
 
 
-TESTING_PSEUNONYM = Pseudonym("ea0b4ecf8d46479880a533252db21f1a")
 TESTING_URA = UraNumber(123)
-
-TESTING_DOMAIN = DataDomain.BeeldBank
 
 
 class ReferralRequestLoggingRepositoryTest(TestCase):
