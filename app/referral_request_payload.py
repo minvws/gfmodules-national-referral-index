@@ -5,7 +5,7 @@ from app.referral_request_type import ReferralRequestType
 
 
 @dataclass
-class ReferrralLoggingPayload:
+class ReferralLoggingPayload:
     endpoint: str
     requesting_uzi_number: str
     ura_number: UraNumber

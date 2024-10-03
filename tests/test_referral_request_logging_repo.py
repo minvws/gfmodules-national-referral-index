@@ -8,7 +8,7 @@ from app.db.repository.referral_request_logging_repository import (
     ReferralRequestLoggingRepository,
 )
 from app.db.session import DbSession
-from app.referral_request_payload import ReferrralLoggingPayload
+from app.referral_request_payload import ReferralLoggingPayload
 from app.referral_request_type import ReferralRequestType
 from tests.test_config import get_test_config
 
@@ -34,7 +34,7 @@ class ReferralRequestLoggingRepositoryTest(TestCase):
             self._session = session
 
     def test_add(self):
-        logging_payload = ReferrralLoggingPayload(
+        logging_payload = ReferralLoggingPayload(
             endpoint="https://test",
             requesting_uzi_number="123",
             ura_number=TESTING_URA,

@@ -6,7 +6,7 @@ from app.db.db import Database
 from app.db.models.referral import ReferralEntity
 from app.db.repository.referral_repository import ReferralRepository
 from app.logging.referral_request_database_logger import ReferralRequestDatabaseLogger
-from app.referral_request_payload import ReferrralLoggingPayload
+from app.referral_request_payload import ReferralLoggingPayload
 from app.referral_request_type import ReferralRequestType
 from app.response_models.referrals import ReferralEntry
 
@@ -42,7 +42,7 @@ class ReferralService:
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
-            logging_payload = ReferrralLoggingPayload(
+            logging_payload = ReferralLoggingPayload(
                 ura_number=ura_number,
                 requesting_uzi_number=uzi_number,
                 endpoint="",
