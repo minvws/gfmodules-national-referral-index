@@ -1,8 +1,13 @@
-from app.response_models.referrals import ReferralEntry
+from dataclasses import dataclass
+from typing import Any
+from app.data import UraNumber
+from app.referral_request_type import ReferralRequestType
 
-class ReferrralLoggingPayload(ReferralEntry):
+
+@dataclass
+class ReferralLoggingPayload:
+    endpoint: str
     requesting_uzi_number: str
-    
-    @classmethod
-    def from_entry(cls, entry: ReferralEntry, uzi_number: str) -> "ReferrralLoggingPayload":
-        return cls(ura_number=entry.ura_number, pseudonym=entry.pseudonym, data_domain=entry.data_domain, requesting_uzi_number=uzi_number)
+    ura_number: UraNumber
+    request_type: ReferralRequestType
+    payload: dict[str, Any]

@@ -6,7 +6,8 @@ from app.db.db import Database
 from app.db.models.referral import ReferralEntity
 from app.db.repository.referral_repository import ReferralRepository
 from app.logging.referral_request_database_logger import ReferralRequestDatabaseLogger
-from app.referral_request_payload import ReferrralLoggingPayload
+from app.referral_request_payload import ReferralLoggingPayload
+from app.referral_request_type import ReferralRequestType
 from app.response_models.referrals import ReferralEntry
 
 
@@ -22,32 +23,51 @@ class ReferralService:
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
-            entities = referral_repository.query_referrals(pseudonym=pseudonym,data_domain=data_domain, ura_number=None)
+            entities = referral_repository.query_referrals(
+                pseudonym=pseudonym, data_domain=data_domain, ura_number=None
+            )
             if not entities:
                 raise HTTPException(status_code=404)
             return [self.hydrate_referral(entity) for entity in entities]
 
     def add_one_referral(
-        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber, uzi_number: str, 
+        self,
+        pseudonym: Pseudonym,
+        data_domain: DataDomain,
+        ura_number: UraNumber,
+        uzi_number: str,
     ) -> ReferralEntry:
         """
         Method that adds a referral to the database
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
-            logging_payload = ReferrralLoggingPayload(ura_number=ura_number, pseudonym=pseudonym, data_domain=data_domain, requesting_uzi_number=uzi_number)
-            
+            logging_payload = ReferralLoggingPayload(
+                ura_number=ura_number,
+                requesting_uzi_number=uzi_number,
+                endpoint="",
+                request_type=ReferralRequestType.CREATE,
+                payload={"pseudonym": str(pseudonym), "data_domain": str(data_domain)},
+            )
+
             # Inject interface with DI when shared package is used (https://github.com/minvws/gfmodules-national-referral-index/issues/42)
             audit_logger = ReferralRequestDatabaseLogger(session)
             audit_logger.log(logging_payload)
 
-            if referral_repository.find_one(pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number) is None:
+            if (
+                referral_repository.find_one(
+                    pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
+                )
+                is None
+            ):
                 referral_entity = ReferralEntity(
                     pseudonym=str(pseudonym),
                     data_domain=str(data_domain),
                     ura_number=str(ura_number),
                 )
-                return self.hydrate_referral(referral_repository.add_one(referral_entity))
+                return self.hydrate_referral(
+                    referral_repository.add_one(referral_entity)
+                )
             raise HTTPException(status_code=409)
 
     def delete_one_referral(
@@ -58,26 +78,31 @@ class ReferralService:
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
-            referral = referral_repository.find_one(pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number)
+            referral = referral_repository.find_one(
+                pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
+            )
             if referral is None:
                 raise HTTPException(status_code=404)
 
             return referral_repository.delete_one(referral)
 
-
     def query_referrals(
-        self, pseudonym: Pseudonym | None, data_domain: DataDomain | None, ura_number: UraNumber
+        self,
+        pseudonym: Pseudonym | None,
+        data_domain: DataDomain | None,
+        ura_number: UraNumber,
     ) -> List[ReferralEntry]:
         """
         Method that removes a referral from the database
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
-            entities = referral_repository.query_referrals(pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number)
+            entities = referral_repository.query_referrals(
+                pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
+            )
             if not entities:
                 raise HTTPException(status_code=404)
             return [self.hydrate_referral(entity) for entity in entities]
-
 
     @staticmethod
     def hydrate_referral(entity: ReferralEntity) -> ReferralEntry:
