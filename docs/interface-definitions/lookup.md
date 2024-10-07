@@ -1,11 +1,9 @@
 # Interface Specification National Referral Index - Lookup
 
-
 ## Disclaimer
 
 The GFModules project is currently under development. The information in this interface description is
 subject to change.
-
 
 ## Context
 
@@ -21,19 +19,26 @@ This interface description and other interfaces of this application can be found
 
 <div style="page-break-after: always;"></div>
 
+## Summary
+
+This interface enables applications in the Healthcare Provider domain to localize the health data of patients
+based on a reference to a pseudonymised BSN (RID). This RID needs to be fetched first from the PRS
+(see [Process](#process)).
+
+![lookup process](../images/structurizr-LocalizeInterface.svg)
+
+<div style="page-break-after: always;"></div>
 
 ## Process
 
-This interface is used in the Generic Function Localisation. In this interface is described how a healthcare party 
-can request the localisation information for a pseudonymised BSN.
+This interface is used in the following processes:
 
-![lookup process](../images/lookup.png)
-
+- [Localize health data](https://github.com/minvws/gfmodules-coordination/blob/main/docs/processes/localize_health_data.md)
+- [Fetch timeline](https://github.com/minvws/gfmodules-coordination/blob/main/docs/processes/timeline.md)
 
 ## Authentication
 
 All endpoints that are described here are only accessible behind mTLS with a valid UZI Server Certificate.
-
 
 ## Endpoints
 
@@ -41,21 +46,18 @@ The following endpoints are provided:
 
 - [info](#info)
 
-
 <div style="page-break-after: always;"></div>
 
 ### Info
 
 The info endpoint gets information about the referrals by pseudonym and data domain.
 
-
 |  |  |
 |---|---|
 | Path | /info |
 | Type | POST |
 | Query Parameters | None |
-| JSON payload | [Pseudonym](#pseudonym), [DataDomain](#datadomain) |
-
+| JSON payload | [Pseudonym](#pseudonym), [DataDomain](#data-domain) |
 
 Example CURL request:
 
@@ -65,7 +67,7 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "pseudonym": '\''<<pseudonym>>'\'',
+  "pseudonym": "<<pseudonym>>",
   "data_domain": "beeld"
 }'
 ```
@@ -87,14 +89,12 @@ Example response:
 ]
 ```
 
-
 #### Pseudonym
-
 
 A pseudonym send as a query parameter or as a json property is always serialized as a string
 
+TODO: Update pseudonym to RID when PRS implementation is finished
 
 #### Data Domain
-
 
 Currently the only supported data domain is `beeldbank`. More will be added in the future.
