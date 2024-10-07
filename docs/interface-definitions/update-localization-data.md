@@ -12,7 +12,7 @@ construction'.
 ## Context
 
 The GFModules project is a collection of applications that have the purpose of improving data exchange process between healthcare providers. The project is the technical implementation of
-the various components of the 'Generieke Functies, lokalisatie en addressering' project of the
+various components of the 'Generieke Functies, lokalisatie en addressering' project of the
 Ministry of Health, Welfare and Sport of the Dutch government.
 
 The National Referral Index (NRI) is responsible for the referral of the Health Data. The NRI contains a referral
