@@ -91,12 +91,24 @@ class ReferralService:
         pseudonym: Pseudonym | None,
         data_domain: DataDomain | None,
         ura_number: UraNumber,
+        request_url: str,
     ) -> List[ReferralEntry]:
         """
         Method that removes a referral from the database
         """
         with self.database.get_db_session() as session:
             referral_repository = session.get_repository(ReferralRepository)
+            logging_payload = ReferralLoggingPayload(
+                ura_number=ura_number,
+                requesting_uzi_number="000000",
+                endpoint=request_url,
+                request_type=ReferralRequestType.QUERY,
+                payload={"pseudonym": str(pseudonym), "data_domain": str(data_domain)},
+            )
+            # Inject interface with DI when shared package is used (https://github.com/minvws/gfmodules-national-referral-index/issues/42)
+            audit_logger = ReferralRequestDatabaseLogger(session)
+            audit_logger.log(logging_payload)
+
             entities = referral_repository.query_referrals(
                 pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
             )

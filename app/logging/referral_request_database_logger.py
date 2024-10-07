@@ -15,3 +15,6 @@ class ReferralRequestDatabaseLogger(ReferralRequestLogger):
     def log(self, referral: ReferralLoggingPayload) -> None:
         repo = ReferralRequestLoggingRepository(self._database_session)
         repo.add_one(referral)
+
+    def log_query(self, referral: ReferralLoggingPayload) -> None:
+        return self.log(referral)
