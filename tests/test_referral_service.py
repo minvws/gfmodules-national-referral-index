@@ -150,6 +150,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             ura_number=mock_referral.ura_number,
             data_domain=None,
+            request_url="http://test",
         )
 
         for referral in actual_referrals:
@@ -201,6 +202,7 @@ class ReferralServiceTest(TestCase):
                 pseudonym=Pseudonym(str(uuid4())),
                 ura_number=UraNumber("99999"),
                 data_domain=None,
+                request_url="http://test",
             )
         self.assertEqual(context.exception.status_code, 404)
 
@@ -209,5 +211,6 @@ class ReferralServiceTest(TestCase):
                 pseudonym=None,
                 ura_number=UraNumber("99999"),
                 data_domain=DataDomain.Medicatie,
+                request_url="http://test",
             )
         self.assertEqual(context.exception.status_code, 404)
