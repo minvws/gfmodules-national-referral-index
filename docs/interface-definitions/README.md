@@ -1,11 +1,9 @@
 # Interface Specifications National Referral Index
 
-
 ## Disclaimer
 
 The GFModules project is currently under development. The information in this interface description is
 subject to change.
-
 
 ## Context
 
@@ -16,10 +14,9 @@ Ministry of Health, Welfare and Sport of the Dutch government.
 
 <div style="page-break-after: always;"></div>
 
-
 ## Interfaces
 
 The National Referral Index has the following interfaces defined:
 
- - [Lookup](lookup.md)
- - Administration
+- [Lookup](lookup.md)
+- [Update localization data](./update-localization-data.md)

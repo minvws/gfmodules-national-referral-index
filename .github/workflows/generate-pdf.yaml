@@ -15,7 +15,7 @@ jobs:
       - name: Publish document
         uses: baileyjm02/markdown-to-pdf@v1
         with:
-          input_path: "docs/interface-definitions/lookup.md"
+          input_path: "docs/interface-definitions"
           images_dir: ${{ matrix.directory }}/docs/images
           output_dir: pdfs
           image_import: ../images

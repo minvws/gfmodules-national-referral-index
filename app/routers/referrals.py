@@ -1,21 +1,22 @@
 import logging
 from typing import List
-from fastapi import APIRouter, Depends, Request
+
+from fastapi import APIRouter, Depends, Request, status
 from opentelemetry import trace
 from starlette.responses import Response
 
 from app import container
 from app.authentication import authenticated_ura
-from app.data import UraNumber
 from app.config import get_config
-from app.services.referral_service import ReferralService
-from app.services.pseudonym_service import PseudonymService
+from app.data import UraNumber
 from app.response_models.referrals import (
-    ReferralEntry,
     CreateReferralRequest,
-    ReferralQuery,
     DeleteReferralRequest,
+    ReferralEntry,
+    ReferralQuery,
 )
+from app.services.pseudonym_service import PseudonymService
+from app.services.referral_service import ReferralService
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -60,6 +61,7 @@ def create_referral(
     "/query",
     summary="Queries referrals by pseudonym or data domain",
     response_model=List[ReferralEntry],
+    status_code=status.HTTP_201_CREATED,
 )
 def query_referrals(
     payload: ReferralQuery,
@@ -75,15 +77,13 @@ def query_referrals(
     span.update_name(
         f"POST {router.prefix}/query pseudonym={str(payload.pseudonym)} data_domain={str(payload.data_domain)} ura_number={str(payload.ura_number)}"
     )
+    request_url = str(request.url)
 
     localisation_pseudonym = None
     if payload.pseudonym is not None:
         localisation_pseudonym = pseudonym_service.exchange(
             payload.pseudonym, get_config().app.provider_id
         )
-
-    request_url = str(request.url)
-
     referrals = referral_service.query_referrals(
         pseudonym=localisation_pseudonym,
         data_domain=payload.data_domain,
@@ -97,8 +97,7 @@ def query_referrals(
 
 
 @router.delete(
-    "/",
-    summary="Deletes a referral",
+    "/", summary="Deletes a referral", status_code=status.HTTP_204_NO_CONTENT
 )
 def delete_referral(
     req: DeleteReferralRequest,
