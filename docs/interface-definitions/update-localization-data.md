@@ -185,7 +185,7 @@ Currently the only supported data domain is `beeldbank`. More will be added in t
 
 #### UraNumber
 
-The URA number is the URA number that should match the provided mTLS client certificate. This is to make sure
+The URA number (UZI Register Abonneenummer) is a number that should match the provided mTLS client certificate. This is to make sure
 that it's not possible to use a different certificate by accident when a client has multiple valid Server Certificates.
 
 #### RequestingUziNumber
