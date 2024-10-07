@@ -37,6 +37,7 @@ class ReferralServiceTest(TestCase):
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
             uzi_number="testuzinumber",
+            request_url="https://test",
         )
 
     def test_add_referral_duplicate(self) -> None:
@@ -53,6 +54,7 @@ class ReferralServiceTest(TestCase):
                     data_domain=mock_referral.data_domain,
                     ura_number=mock_referral.ura_number,
                     uzi_number="testuzinumber",
+                    request_url="https://test",
                 )
         self.assertEqual(context.exception.status_code, 409)
 
@@ -68,6 +70,7 @@ class ReferralServiceTest(TestCase):
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
             uzi_number="testuzinumber",
+            request_url="https://test",
         )
         actual_referrals = self.referral_service.get_referrals_by_domain_and_pseudonym(
             pseudonym=mock_referral.pseudonym, data_domain=mock_referral.data_domain
@@ -97,6 +100,7 @@ class ReferralServiceTest(TestCase):
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
             uzi_number="testuzinumber",
+            request_url="https://test",
         )
         actual_referrals = self.referral_service.get_referrals_by_domain_and_pseudonym(
             pseudonym=mock_referral.pseudonym, data_domain=mock_referral.data_domain
@@ -140,12 +144,12 @@ class ReferralServiceTest(TestCase):
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
             uzi_number="testuzinumber",
+            request_url="https://test",
         )
         actual_referrals = self.referral_service.query_referrals(
             pseudonym=mock_referral.pseudonym,
             ura_number=mock_referral.ura_number,
             data_domain=None,
-            request_url="https://test",
         )
 
         for referral in actual_referrals:
@@ -165,6 +169,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
+            request_url="https://test",
         )
 
         mock_referral_2 = ReferralEntry(
@@ -178,6 +183,7 @@ class ReferralServiceTest(TestCase):
             data_domain=mock_referral_2.data_domain,
             ura_number=mock_referral_2.ura_number,
             uzi_number="testuzi_number",
+            request_url="https://test",
         )
 
         actual_referrals = self.referral_service.query_referrals(
@@ -195,7 +201,6 @@ class ReferralServiceTest(TestCase):
                 pseudonym=Pseudonym(str(uuid4())),
                 ura_number=UraNumber("99999"),
                 data_domain=None,
-                request_url="https://test",
             )
         self.assertEqual(context.exception.status_code, 404)
 
@@ -204,6 +209,5 @@ class ReferralServiceTest(TestCase):
                 pseudonym=None,
                 ura_number=UraNumber("99999"),
                 data_domain=DataDomain.Medicatie,
-                request_url="https://test",
             )
         self.assertEqual(context.exception.status_code, 404)

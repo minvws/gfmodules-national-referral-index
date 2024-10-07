@@ -31,7 +31,8 @@ router = APIRouter(
     response_model=ReferralEntry,
 )
 def create_referral(
-    req: CreateReferralRequest,
+    payload: CreateReferralRequest,
+    request: Request,
     referral_service: ReferralService = Depends(container.get_referral_service),
     pseudonym_service: PseudonymService = Depends(container.get_pseudonym_service),
     _: UraNumber = Depends(authenticated_ura),
@@ -41,16 +42,17 @@ def create_referral(
     """
     span = trace.get_current_span()
     span.update_name(
-        f"POST {router.prefix}/ pseudonym={str(req.pseudonym)} data_domain={str(req.data_domain)}, ura_number={str(req.ura_number)}"
+        f"POST {router.prefix}/ pseudonym={str(payload.pseudonym)} data_domain={str(payload.data_domain)}, ura_number={str(payload.ura_number)}"
     )
     localisation_pseudonym = pseudonym_service.exchange(
-        req.pseudonym, get_config().app.provider_id
+        payload.pseudonym, get_config().app.provider_id
     )
     referral: ReferralEntry = referral_service.add_one_referral(
         pseudonym=localisation_pseudonym,
-        data_domain=req.data_domain,
-        ura_number=req.ura_number,
-        uzi_number=req.requesting_uzi_number,
+        data_domain=payload.data_domain,
+        ura_number=payload.ura_number,
+        uzi_number=payload.requesting_uzi_number,
+        request_url=str(request.url),
     )
     span.set_attribute("data.referral", str(referral))
 

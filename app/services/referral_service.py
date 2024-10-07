@@ -36,6 +36,7 @@ class ReferralService:
         data_domain: DataDomain,
         ura_number: UraNumber,
         uzi_number: str,
+        request_url: str,
     ) -> ReferralEntry:
         """
         Method that adds a referral to the database
@@ -45,7 +46,7 @@ class ReferralService:
             logging_payload = ReferralLoggingPayload(
                 ura_number=ura_number,
                 requesting_uzi_number=uzi_number,
-                endpoint="",
+                endpoint=request_url,
                 request_type=ReferralRequestType.CREATE,
                 payload={"pseudonym": str(pseudonym), "data_domain": str(data_domain)},
             )
