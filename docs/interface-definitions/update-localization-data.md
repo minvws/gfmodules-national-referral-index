@@ -11,9 +11,9 @@ construction'.
 
 ## Context
 
-The GFModules project is a collection of applications that have the purpose of improving data exchange process between healthcare providers. The project is the technical implementation of
-various components of the 'Generieke Functies, lokalisatie en addressering' project of the
-Ministry of Health, Welfare and Sport of the Dutch government.
+The GFModules project is a collection of applications that have the purpose of improving data exchange process between
+healthcare providers. The project is the technical implementation of various components of the 'Generieke Functies,
+lokalisatie en addressering' project of the Ministry of Health, Welfare and Sport of the Dutch government.
 
 The National Referral Index (NRI) is responsible for the referral of the Health Data. The NRI contains a referral
 to the register that associates a Health Provider with pseudonym and data domain.
@@ -48,7 +48,7 @@ URA number should also match the URA number from the certificate.
 The following endpoints are provided:
 
 - [registrations (Post)](#registrations-post)
-- [registrations/query (Post)](#registrations-query-post) <!-- markdownlint-disable-line MD051 -->
+- [registrations/query (Post)](#registrationsquery-post)
 - [registrations (Delete)](#registrations-delete)
 
 <div style="page-break-after: always;"></div>
