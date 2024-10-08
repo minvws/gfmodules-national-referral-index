@@ -72,12 +72,28 @@ class ReferralService:
             raise HTTPException(status_code=409)
 
     def delete_one_referral(
-        self, pseudonym: Pseudonym, data_domain: DataDomain, ura_number: UraNumber
+        self,
+        pseudonym: Pseudonym,
+        data_domain: DataDomain,
+        ura_number: UraNumber,
+        request_url: str,
     ) -> None:
         """
         Method that removes a referral from the database
         """
         with self.database.get_db_session() as session:
+            logging_payload = ReferralLoggingPayload(
+                ura_number=ura_number,
+                requesting_uzi_number="000000",
+                endpoint=request_url,
+                request_type=ReferralRequestType.DELETE,
+                payload={"pseudonym": str(pseudonym), "data_domain": str(data_domain)},
+            )
+
+            # Inject interface with DI when shared package is used (https://github.com/minvws/gfmodules-national-referral-index/issues/42)
+            audit_logger = ReferralRequestDatabaseLogger(session)
+            audit_logger.log(logging_payload)
+
             referral_repository = session.get_repository(ReferralRepository)
             referral = referral_repository.find_one(
                 pseudonym=pseudonym, data_domain=data_domain, ura_number=ura_number
