@@ -13,26 +13,41 @@ class PseudonymError(Exception):
 
 
 class PseudonymService:
-    def __init__(self, endpoint: str, timeout: int, mtls_cert: str|None, mtls_key: str|None, mtls_ca: str|None):
+    _provider_id: str
+
+    def __init__(
+        self,
+        endpoint: str,
+        timeout: int,
+        provider_id: str,
+        mtls_cert: str | None,
+        mtls_key: str | None,
+        mtls_ca: str | None,
+    ):
         self.endpoint = endpoint
         self.timeout = timeout
+        self._provider_id = provider_id
         self.mtls_cert = mtls_cert
         self.mtls_key = mtls_key
         self.mtls_ca = mtls_ca
 
-    def exchange(self, pseudonym: Pseudonym, provider_id: str) -> Pseudonym:
-        logger.info(f"Exchanging pseudonym {str(pseudonym)} for provider {provider_id}")
+    def exchange(self, pseudonym: Pseudonym) -> Pseudonym:
+        logger.info(
+            f"Exchanging pseudonym {str(pseudonym)} for provider {self._provider_id}"
+        )
 
         try:
             req = requests.post(
                 f"{self.endpoint}/exchange",
                 json={
                     "source_pseudonym": str(pseudonym),
-                    "target_provider_id": str(provider_id)
+                    "target_provider_id": str(self._provider_id),
                 },
                 timeout=self.timeout,
-                cert=(self.mtls_cert, self.mtls_key) if self.mtls_cert and self.mtls_key else None,
-                verify=self.mtls_ca if self.mtls_ca else True
+                cert=(self.mtls_cert, self.mtls_key)
+                if self.mtls_cert and self.mtls_key
+                else None,
+                verify=self.mtls_ca if self.mtls_ca else True,
             )
         except (Exception, HTTPError) as e:
             raise PseudonymError(f"Failed to exchange pseudonym: {e}")
@@ -42,7 +57,7 @@ class PseudonymService:
 
         data = req.json()
         try:
-            new_pseudonym = Pseudonym(data.get('pseudonym', ''))
+            new_pseudonym = Pseudonym(data.get("pseudonym", ""))
         except ValueError:
             raise PseudonymError("Failed to exchange pseudonym: invalid pseudonym")
 

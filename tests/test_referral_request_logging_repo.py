@@ -1,6 +1,5 @@
 from unittest import TestCase
 
-from app.config import set_config
 from app.data import UraNumber
 from app.db.db import Database
 from app.db.models.referral_request_log import ReferralRequestLogEntry
@@ -23,8 +22,8 @@ class ReferralRequestLoggingRepositoryTest(TestCase):
     _session: DbSession
 
     def setUp(self) -> None:
-        set_config(get_test_config())
-        self._db = Database("sqlite:///:memory:")
+        config = get_test_config()
+        self._db = Database("sqlite:///:memory:", config)
         self._db.generate_tables()
 
         with self._db.get_db_session() as session:

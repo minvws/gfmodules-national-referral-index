@@ -8,29 +8,26 @@ from opentelemetry.trace import NoOpTracer, Tracer
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
-from app.config import get_config
+from app.config import ConfigTelemetry
 
 _TRACER: Tracer = NoOpTracer()
 
 
-def setup_telemetry(app: fastapi.FastAPI) -> None:
-    config = get_config()
-    processor = BatchSpanProcessor(
-        OTLPSpanExporter(endpoint=config.telemetry.endpoint)
-    )
+def setup_telemetry(app: fastapi.FastAPI, config: ConfigTelemetry) -> None:
+    processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=config.endpoint))
 
-    resource = Resource(attributes={"service.name": config.telemetry.service_name or ""})
+    resource = Resource(attributes={"service.name": config.service_name or ""})
     provider = TracerProvider(resource=resource)
     provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
 
     global _TRACER
-    _TRACER = trace.get_tracer(config.telemetry.tracer_name or "")
+    _TRACER = trace.get_tracer(config.tracer_name or "")
 
     FastAPIInstrumentor.instrument_app(app)
     RequestsInstrumentor().instrument()
 
 
-def get_tracer() -> trace.Tracer|None:
+def get_tracer() -> trace.Tracer | None:
     global _TRACER
     return _TRACER

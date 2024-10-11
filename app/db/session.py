@@ -7,7 +7,7 @@ from sqlalchemy import Engine
 from sqlalchemy.exc import OperationalError, DatabaseError, PendingRollbackError
 from sqlalchemy.orm import Session
 
-from app.config import get_config
+from app.config import Config
 from app.db.models.base import Base
 from app.db.repository.respository_base import TRepositoryBase, RepositoryBase
 
@@ -18,7 +18,7 @@ current transaction.
 
 Usage:
 
-    with DbSession(engine) as session:
+    with DbSession(engine, config) as session:
         repo = session.get_repository(MyModelRepository)
         repo.find_all()
         session.add_resource(MyModel())
@@ -33,7 +33,7 @@ current transaction.
 
 Usage:
 
-    with DbSession(engine) as session:
+    with DbSession(engine, config) as session:
         repo = session.get_repository(MyModel)
         repo.find_all()
         session.add(MyModel())
@@ -42,13 +42,18 @@ Usage:
 
 logger = logging.getLogger(__name__)
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class DbSession:
-    def __init__(self, engine: Engine) -> None:
-        self._engine = engine
+    _engine: Engine
+    _config: Config
 
-    def __enter__(self) -> 'DbSession':
+    def __init__(self, engine: Engine, config: Config) -> None:
+        self._engine = engine
+        self._config = config
+
+    def __enter__(self) -> "DbSession":
         """
         Create a new session when entering the context manager
         """
@@ -61,7 +66,9 @@ class DbSession:
         """
         self.session.close()
 
-    def get_repository(self, repository_class: Type[TRepositoryBase]) -> TRepositoryBase:
+    def get_repository(
+        self, repository_class: Type[TRepositoryBase]
+    ) -> TRepositoryBase:
         """
         Returns an instantiated repository for the given model class
         """
@@ -125,7 +132,7 @@ class DbSession:
         """
         Retry a function call in case of database errors
         """
-        backoff = get_config().database.retry_backoff
+        backoff = self._config.database.retry_backoff
 
         while True:
             try:
@@ -147,5 +154,5 @@ class DbSession:
                 raise Exception("Operation failed after all retries")
 
             logger.info("Retrying operation in %s seconds", backoff[0])
-            sleep(backoff[0] + random.uniform(0, 0.1) )
+            sleep(backoff[0] + random.uniform(0, 0.1))
             backoff = backoff[1:]

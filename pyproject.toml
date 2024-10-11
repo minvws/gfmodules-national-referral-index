@@ -12,7 +12,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.11"
-uvicorn = "^0.26.0"
+uvicorn = "0.31.1"
 fastapi = "^0.109.1"
 mypy = "^1.8.0"
 pydantic-settings = "^2.1.0"
@@ -28,6 +28,7 @@ opentelemetry-instrumentation-requests = "^0.45b0"
 requests = "^2.32.0"
 statsd = "^4.0.1"
 puzi = {git = "https://github.com/minvws/puzi-python" }
+click = "^8.1.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.4"

@@ -4,30 +4,35 @@ from sqlalchemy.orm import Session
 
 from app.db.session import DbSession
 
-from app.config import get_config
+from app.config import Config
 from app.db.models.base import Base
 
 logger = logging.getLogger(__name__)
 
 
 class Database:
-    def __init__(self, dsn: str):
+    _config: Config
+
+    def __init__(self, dsn: str, config: Config):
+        self._config = config
+
         try:
             if "sqlite://" in dsn:
                 self.engine = create_engine(
                     dsn,
-                    connect_args={'check_same_thread': False},      # This + static pool is needed for sqlite in-memory tables
-                    poolclass=StaticPool
+                    connect_args={
+                        "check_same_thread": False
+                    },  # This + static pool is needed for sqlite in-memory tables
+                    poolclass=StaticPool,
                 )
             else:
-                config = get_config()
                 self.engine = create_engine(
                     dsn,
                     echo=False,
                     pool_pre_ping=config.database.pool_pre_ping,
                     pool_recycle=config.database.pool_recycle,
                     pool_size=config.database.pool_size,
-                    max_overflow=config.database.max_overflow
+                    max_overflow=config.database.max_overflow,
                 )
         except BaseException as e:
             logger.error("Error while connecting to database: %s", e)
@@ -45,11 +50,11 @@ class Database:
         """
         try:
             with Session(self.engine) as session:
-                session.execute(text('SELECT 1'))
+                session.execute(text("SELECT 1"))
             return True
         except Exception as e:
             logger.info("Database is not healthy: %s", e)
             return False
 
     def get_db_session(self) -> DbSession:
-        return DbSession(self.engine)
+        return DbSession(self.engine, self._config)
