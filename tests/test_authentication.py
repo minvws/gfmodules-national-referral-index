@@ -3,44 +3,48 @@ from fastapi import HTTPException
 from starlette.requests import Request
 from uzireader.uziserver import UziServer
 
-from app.authentication import authenticated_ura, enforce_cert_newlines
-from app.config import set_config
+from app.authentication import (
+    enforce_cert_newlines,
+    resolve_authenticated_ura_number,
+)
 from app.data import UraNumber
 from tests.test_config import get_test_config
 
 
 def test_authenticated_ura(mocker):
-    set_config(get_test_config())
+    config = get_test_config()
 
     request = mocker.MagicMock(spec=Request)
-    request.headers = {
-        "x-proxy-ssl_client_cert": "cert-content"
-    }
+    request.headers = {"x-proxy-ssl_client_cert": "cert-content"}
 
     mock_class = mocker.MagicMock(spec=UziServer)
     dic = {"SubscriberNumber": 12345679}
     mock_class.__getitem__.side_effect = dic.__getitem__
 
-    uzi_server_creation_mock = mocker.patch.object(UziServer, "__new__", return_value=mock_class)
+    uzi_server_creation_mock = mocker.patch.object(
+        UziServer, "__new__", return_value=mock_class
+    )
 
-    actual = authenticated_ura(request)
+    actual = resolve_authenticated_ura_number(request, config)
 
     assert actual == UraNumber(12345679)
 
     uzi_server_creation_mock.assert_called_once_with(
         UziServer,
         verify="SUCCESS",
-        cert="-----BEGIN CERTIFICATE-----\ncert-content\n-----END CERTIFICATE-----")
+        cert="-----BEGIN CERTIFICATE-----\ncert-content\n-----END CERTIFICATE-----",
+    )
     mock_class.__getitem__.assert_called_with("SubscriberNumber")
 
 
 def test_authenticated_ura_when_header_not_present(mocker):
+    config = get_test_config()
+
     request = mocker.MagicMock(spec=Request)
-    request.headers = {
-    }
+    request.headers = {}
 
     with pytest.raises(HTTPException):
-        authenticated_ura(request)
+        resolve_authenticated_ura_number(request, config)
 
 
 def test_enforce_cert_newlines_with_headers():

@@ -3,19 +3,18 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
-from app.config import set_config
 from app.data import UraNumber, Pseudonym, DataDomain
 from app.response_models.referrals import ReferralEntry
 from app.services.referral_service import ReferralService
 from app.db.db import Database
-from test_config import get_test_config
+from tests.test_config import get_test_config
 
 
 class ReferralServiceTest(TestCase):
     def setUp(self) -> None:
-        set_config(get_test_config())
+        config = get_test_config()
         # setup db
-        self.db = Database("sqlite:///:memory:")
+        self.db = Database("sqlite:///:memory:", config)
         self.db.generate_tables()
         # setup service
         self.referral_service = ReferralService(self.db)
