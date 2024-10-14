@@ -1,6 +1,5 @@
 from fastapi import Depends, Request
 import inject
-from app.authentication import resolve_authenticated_ura_number
 from app.data import UraNumber
 from app.db.db import Database
 from app.config import Config, load_default_config

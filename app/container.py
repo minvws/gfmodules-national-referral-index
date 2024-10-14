@@ -4,10 +4,6 @@ from app.config import Config
 from app.dependencies import get_default_config
 from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
-from app.services.ura_number_finder import (
-    ConfigOverridenURANumberFinder,
-    StarletteRequestURANumberFinder,
-)
 
 
 def container_config(binder: inject.Binder) -> None:
