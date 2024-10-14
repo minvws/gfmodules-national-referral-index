@@ -19,7 +19,7 @@ class ConfigOverridenURANumberFinder(URANumberFinder):
     def __init__(self, config_value: str) -> None:
         self._config_value = config_value
 
-    def find(self):
+    def find(self) -> UraNumber:
         return UraNumber(self._config_value)
 
 

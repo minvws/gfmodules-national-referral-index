@@ -36,7 +36,7 @@ def authenticated_ura(
     # The reason why I wouldn't advice an request parameter is because that will break the Liskov Substitution Principle (LSP);
     # the methods will not have the same signature. Instead, can simplify it here.
     finder = (
-        ConfigOverridenURANumberFinder()
+        ConfigOverridenURANumberFinder(config.app.override_authentication_ura)
         if config.app.override_authentication_ura
         else StarletteRequestURANumberFinder(request)
     )
