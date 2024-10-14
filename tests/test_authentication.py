@@ -3,17 +3,11 @@ from fastapi import HTTPException
 from starlette.requests import Request
 from uzireader.uziserver import UziServer
 
-from app.authentication import (
-    enforce_cert_newlines,
-    resolve_authenticated_ura_number,
-)
 from app.data import UraNumber
-from tests.test_config import get_test_config
+from app.services.ura_number_finder import StarletteRequestURANumberFinder
 
 
 def test_authenticated_ura(mocker):
-    config = get_test_config()
-
     request = mocker.MagicMock(spec=Request)
     request.headers = {"x-proxy-ssl_client_cert": "cert-content"}
 
@@ -25,7 +19,7 @@ def test_authenticated_ura(mocker):
         UziServer, "__new__", return_value=mock_class
     )
 
-    actual = resolve_authenticated_ura_number(request, config)
+    actual = StarletteRequestURANumberFinder(request).find()
 
     assert actual == UraNumber(12345679)
 
@@ -38,26 +32,32 @@ def test_authenticated_ura(mocker):
 
 
 def test_authenticated_ura_when_header_not_present(mocker):
-    config = get_test_config()
-
     request = mocker.MagicMock(spec=Request)
     request.headers = {}
 
     with pytest.raises(HTTPException):
-        resolve_authenticated_ura_number(request, config)
+        StarletteRequestURANumberFinder(request)
 
 
-def test_enforce_cert_newlines_with_headers():
+def test_enforce_cert_newlines_with_headers(mocker):
+    request = mocker.MagicMock(spec=Request)
+    request.headers = {"x-proxy-ssl_client_cert": "cert-content"}
+
     cert = "-----BEGIN CERTIFICATE-----000102030405060708091011121314151617181920212223242526272829303132333435363738394041424344454647484950-----END CERTIFICATE-----"
     expected = "-----BEGIN CERTIFICATE-----\n0001020304050607080910111213141516171819202122232425262728293031\n32333435363738394041424344454647484950\n-----END CERTIFICATE-----"
 
-    actual = enforce_cert_newlines(cert)
+    finder = StarletteRequestURANumberFinder(request)
+    actual = finder._enforce_cert_newlines(cert)
     assert actual == expected
 
 
-def test_enforce_cert_newlines_without_headers():
+def test_enforce_cert_newlines_without_headers(mocker):
+    request = mocker.MagicMock(spec=Request)
+    request.headers = {"x-proxy-ssl_client_cert": "cert-content"}
+
     cert = "000102030405060708091011121314151617181920212223242526272829303132333435363738394041424344454647484950"
     expected = "-----BEGIN CERTIFICATE-----\n0001020304050607080910111213141516171819202122232425262728293031\n32333435363738394041424344454647484950\n-----END CERTIFICATE-----"
 
-    actual = enforce_cert_newlines(cert)
+    finder = StarletteRequestURANumberFinder(request)
+    actual = finder._enforce_cert_newlines(cert)
     assert actual == expected
