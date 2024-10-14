@@ -1,6 +1,7 @@
 import logging
 from fastapi import FastAPI
 
+from app import container
 from app.config import Config, load_default_config
 from app.stats import StatsdMiddleware, setup_stats
 from app.telemetry import setup_telemetry
@@ -48,6 +49,7 @@ def setup_fastapi(config: Config) -> FastAPI:
         if config.app.swagger_enabled
         else FastAPI(docs_url=None, redoc_url=None)
     )
+    container.configure()
 
     routers = [default_router, health_router, referral_router, info_referral_router]
     for router in routers:

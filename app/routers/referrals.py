@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Request, status
 from opentelemetry import trace
 from starlette.responses import Response
 
-from app import container
+from app import dependencies
 from app.data import UraNumber
 from app.response_models.referrals import (
     CreateReferralRequest,
@@ -13,6 +13,7 @@ from app.response_models.referrals import (
     ReferralEntry,
     ReferralQuery,
 )
+
 from app.services.pseudonym_service import PseudonymService
 from app.services.referral_service import ReferralService
 
@@ -31,9 +32,9 @@ router = APIRouter(
 def create_referral(
     payload: CreateReferralRequest,
     request: Request,
-    referral_service: ReferralService = Depends(container.get_referral_service),
-    pseudonym_service: PseudonymService = Depends(container.get_pseudonym_service),
-    _: UraNumber = Depends(container.authenticated_ura),
+    referral_service: ReferralService = Depends(dependencies.get_referral_service),
+    pseudonym_service: PseudonymService = Depends(dependencies.get_pseudonym_service),
+    _: UraNumber = Depends(dependencies.authenticated_ura),
 ) -> ReferralEntry:
     """
     Creates a referral
@@ -65,9 +66,9 @@ def create_referral(
 def query_referrals(
     payload: ReferralQuery,
     request: Request,
-    referral_service: ReferralService = Depends(container.get_referral_service),
-    pseudonym_service: PseudonymService = Depends(container.get_pseudonym_service),
-    _: UraNumber = Depends(container.authenticated_ura),
+    referral_service: ReferralService = Depends(dependencies.get_referral_service),
+    pseudonym_service: PseudonymService = Depends(dependencies.get_pseudonym_service),
+    _: UraNumber = Depends(dependencies.authenticated_ura),
 ) -> List[ReferralEntry]:
     """
     Queries referrals by optional pseudonym or optional data domain
@@ -99,9 +100,9 @@ def query_referrals(
 )
 def delete_referral(
     req: DeleteReferralRequest,
-    referral_service: ReferralService = Depends(container.get_referral_service),
-    pseudonym_service: PseudonymService = Depends(container.get_pseudonym_service),
-    _: UraNumber = Depends(container.authenticated_ura),
+    referral_service: ReferralService = Depends(dependencies.get_referral_service),
+    pseudonym_service: PseudonymService = Depends(dependencies.get_pseudonym_service),
+    _: UraNumber = Depends(dependencies.authenticated_ura),
 ) -> Response:
     """
     Deletes a referral
