@@ -61,7 +61,7 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = "tests.*"
 
-# Since this are our test folder, we don't need "-> None" annotations everywhere
+# Since this are our tests, we don't need "-> None" annotations everywhere
 disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
