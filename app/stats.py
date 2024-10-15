@@ -7,7 +7,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.types import ASGIApp
 
-from app.config import get_config
+from app.config import ConfigStats
 
 
 class Stats:
@@ -58,17 +58,15 @@ class Statsd(Stats):
 _STATS: Stats = NoopStats()
 
 
-def setup_stats() -> None:
-    config = get_config()
-
-    if config.stats.enabled is False:
+def setup_stats(config: ConfigStats) -> None:
+    if config.enabled is False:
         return
 
-    config.stats.host = config.stats.host or "localhost"
-    config.stats.port = config.stats.port or 8125
+    config.host = config.host or "localhost"
+    config.port = config.port or 8125
 
     global _STATS
-    _STATS = Statsd(config.stats.host, config.stats.port)
+    _STATS = Statsd(config.host, config.port)
 
 
 def get_stats() -> Stats:
@@ -80,11 +78,14 @@ class StatsdMiddleware(BaseHTTPMiddleware):
     """
     Middleware to record request info and response time for each request
     """
+
     def __init__(self, app: ASGIApp, module_name: str):
         super().__init__(app)
         self.module_name = module_name
 
-    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
         key = f"{self.module_name}.http.request.{request.method.lower()}.{request.url.path}"
         get_stats().inc(key)
 
@@ -96,5 +97,3 @@ class StatsdMiddleware(BaseHTTPMiddleware):
         get_stats().timing(f"{self.module_name}.http.response_time", response_time)
 
         return response
-
-

@@ -3,19 +3,18 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
-from app.config import set_config
 from app.data import UraNumber, Pseudonym, DataDomain
 from app.response_models.referrals import ReferralEntry
 from app.services.referral_service import ReferralService
 from app.db.db import Database
-from test_config import get_test_config
+from tests.test_config import get_test_config
 
 
 class ReferralServiceTest(TestCase):
     def setUp(self) -> None:
-        set_config(get_test_config())
+        config = get_test_config()
         # setup db
-        self.db = Database("sqlite:///:memory:")
+        self.db = Database("sqlite:///:memory:", config)
         self.db.generate_tables()
         # setup service
         self.referral_service = ReferralService(self.db)
@@ -152,6 +151,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             ura_number=mock_referral.ura_number,
             data_domain=None,
+            request_url="http://test",
         )
 
         for referral in actual_referrals:
@@ -189,7 +189,10 @@ class ReferralServiceTest(TestCase):
         )
 
         actual_referrals = self.referral_service.query_referrals(
-            pseudonym=None, ura_number=mock_referral.ura_number, data_domain=None
+            pseudonym=None,
+            ura_number=mock_referral.ura_number,
+            data_domain=None,
+            request_url="https://test",
         )
 
         self.assertEqual(len(actual_referrals), 2)
@@ -200,6 +203,7 @@ class ReferralServiceTest(TestCase):
                 pseudonym=Pseudonym(str(uuid4())),
                 ura_number=UraNumber("99999"),
                 data_domain=None,
+                request_url="http://test",
             )
         self.assertEqual(context.exception.status_code, 404)
 
@@ -208,5 +212,6 @@ class ReferralServiceTest(TestCase):
                 pseudonym=None,
                 ura_number=UraNumber("99999"),
                 data_domain=DataDomain.Medicatie,
+                request_url="http://test",
             )
         self.assertEqual(context.exception.status_code, 404)
