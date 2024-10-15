@@ -1,13 +1,39 @@
+from pathlib import Path
 import inject
+from pydantic import ValidationError
 from app.db.db import Database
-from app.config import Config
-from app.dependencies import get_default_config
+from app.config import PROJECT_ROOT, Config, read_ini_file
 from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
 
 
+DEFAULT_CONFIG_INI_FILE = PROJECT_ROOT / "app.conf"
+
+
+def _load_default_config(path: Path) -> Config:
+    # To be inline with other python code, we use INI-type files for configuration. Since this isn't
+    # a standard format for pydantic, we need to do some manual parsing first.
+    ini_data = read_ini_file(path)
+
+    try:
+        # Convert database.retry_backoff to a list of floats
+        if "retry_backoff" in ini_data["database"] and isinstance(
+            ini_data["database"]["retry_backoff"], str
+        ):
+            # convert the string to a list of floats
+            ini_data["database"]["retry_backoff"] = [
+                float(i) for i in ini_data["database"]["retry_backoff"].split(",")
+            ]
+
+        config = Config(**ini_data)
+    except ValidationError as e:
+        raise e
+
+    return config
+
+
 def container_config(binder: inject.Binder) -> None:
-    config = get_default_config()
+    config = _load_default_config(DEFAULT_CONFIG_INI_FILE)
     provider_id = config.app.provider_id
 
     db = Database(dsn=config.database.dsn, config=config)

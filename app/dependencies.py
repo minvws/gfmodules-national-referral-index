@@ -2,7 +2,7 @@ from fastapi import Depends, Request
 import inject
 from app.data import UraNumber
 from app.db.db import Database
-from app.config import Config, load_default_config
+from app.config import Config
 from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
 from app.services.ura_number_finder import (
@@ -12,7 +12,7 @@ from app.services.ura_number_finder import (
 
 
 def get_default_config() -> Config:
-    return load_default_config()
+    return inject.instance(Config)
 
 
 def get_database() -> Database:
