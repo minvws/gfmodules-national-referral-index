@@ -8,7 +8,7 @@ from app.authentication import (
     resolve_authenticated_ura_number,
 )
 from app.data import UraNumber
-from tests.conf import get_test_config
+from tests.test_config import get_test_config
 
 
 def test_authenticated_ura(mocker):
