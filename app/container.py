@@ -6,7 +6,7 @@ from app.config import PROJECT_ROOT, Config, ConfigApp, read_ini_file
 from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
 from app.services.ura_number_finder import (
-    ConfigOverridenURANumberFinder,
+    ConfigOverridenMockURANumberFinder,
     RequestURANumberFinder,
     StarletteRequestURANumberFinder,
 )
@@ -39,7 +39,7 @@ def _load_default_config(path: Path) -> Config:
 
 def _resolve_ura_number_finder(config: ConfigApp) -> StarletteRequestURANumberFinder:
     if config.override_authentication_ura:
-        return ConfigOverridenURANumberFinder(config.override_authentication_ura)
+        return ConfigOverridenMockURANumberFinder(config.override_authentication_ura)
 
     return RequestURANumberFinder()
 

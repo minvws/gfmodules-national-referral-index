@@ -13,7 +13,7 @@ class StarletteRequestURANumberFinder(abc.ABC):
         ...
 
 
-class ConfigOverridenURANumberFinder(StarletteRequestURANumberFinder):
+class ConfigOverridenMockURANumberFinder(StarletteRequestURANumberFinder):
     _config_value: str
 
     def __init__(self, config_value: str) -> None:
