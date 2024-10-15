@@ -99,6 +99,7 @@ def query_referrals(
     "/", summary="Deletes a referral", status_code=status.HTTP_204_NO_CONTENT
 )
 def delete_referral(
+    request: Request,
     req: DeleteReferralRequest,
     referral_service: ReferralService = Depends(dependencies.get_referral_service),
     pseudonym_service: PseudonymService = Depends(dependencies.get_pseudonym_service),
@@ -111,11 +112,13 @@ def delete_referral(
     span.update_name(
         f"DELETE {router.prefix}/ pseudonym={str(req.pseudonym)} data_domain={str(req.data_domain)} ura_number={str(req.ura_number)}"
     )
+    request_url = str(request.url)
     localisation_pseudonym = pseudonym_service.exchange(req.pseudonym)
 
     referral_service.delete_one_referral(
         pseudonym=localisation_pseudonym,
         data_domain=req.data_domain,
         ura_number=req.ura_number,
+        request_url=request_url,
     )
     return Response(status_code=204)

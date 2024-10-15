@@ -114,6 +114,7 @@ class ReferralServiceTest(TestCase):
             pseudonym=mock_referral.pseudonym,
             data_domain=mock_referral.data_domain,
             ura_number=mock_referral.ura_number,
+            request_url="https://test",
         )
 
         with self.assertRaises(HTTPException) as context:
@@ -128,6 +129,7 @@ class ReferralServiceTest(TestCase):
                 pseudonym=Pseudonym(str(uuid4())),
                 data_domain=DataDomain.BeeldBank,
                 ura_number=UraNumber("99999"),
+                request_url="https://test",
             )
         self.assertEqual(context.exception.status_code, 404)
 
