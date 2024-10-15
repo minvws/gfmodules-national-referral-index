@@ -2,9 +2,14 @@ from pathlib import Path
 import inject
 from pydantic import ValidationError
 from app.db.db import Database
-from app.config import PROJECT_ROOT, Config, read_ini_file
+from app.config import PROJECT_ROOT, Config, ConfigApp, read_ini_file
 from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
+from app.services.ura_number_finder import (
+    ConfigOverridenURANumberFinder,
+    RequestURANumberFinder,
+    StarletteRequestURANumberFinder,
+)
 
 
 DEFAULT_CONFIG_INI_FILE = PROJECT_ROOT / "app.conf"
@@ -32,6 +37,13 @@ def _load_default_config(path: Path) -> Config:
     return config
 
 
+def _resolve_ura_number_finder(config: ConfigApp) -> StarletteRequestURANumberFinder:
+    if config.override_authentication_ura:
+        return ConfigOverridenURANumberFinder(config.override_authentication_ura)
+
+    return RequestURANumberFinder()
+
+
 def container_config(binder: inject.Binder) -> None:
     config = _load_default_config(DEFAULT_CONFIG_INI_FILE)
     provider_id = config.app.provider_id
@@ -52,6 +64,7 @@ def container_config(binder: inject.Binder) -> None:
     )
     binder.bind(PseudonymService, pseudonym_service)
     binder.bind(Config, config)
+    binder.bind(StarletteRequestURANumberFinder, _resolve_ura_number_finder(config.app))
 
 
 def configure() -> None:

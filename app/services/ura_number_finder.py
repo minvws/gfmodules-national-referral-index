@@ -7,35 +7,27 @@ from starlette.requests import Request
 from uzireader.uziserver import UziServer
 
 
-class URANumberFinder(abc.ABC):
+class StarletteRequestURANumberFinder(abc.ABC):
     @abc.abstractmethod
-    def find(self) -> UraNumber:
+    def find(self, request: Request) -> UraNumber:
         ...
 
 
-class ConfigOverridenURANumberFinder(URANumberFinder):
+class ConfigOverridenURANumberFinder(StarletteRequestURANumberFinder):
     _config_value: str
 
     def __init__(self, config_value: str) -> None:
         self._config_value = config_value
 
-    def find(self) -> UraNumber:
+    def find(self, request: Request) -> UraNumber:
         return UraNumber(self._config_value)
 
 
-class StarletteRequestURANumberFinder(URANumberFinder):
+class RequestURANumberFinder(StarletteRequestURANumberFinder):
     _CERT_START = "-----BEGIN CERTIFICATE-----"
     _CERT_END = "-----END CERTIFICATE-----"
 
     _cert: str
-
-    def __init__(self, request: Request) -> None:
-        if "x-proxy-ssl_client_cert" not in request.headers:
-            raise HTTPException(
-                status_code=401,
-                detail="Missing client certificate",
-            )
-        self._cert = request.headers["x-proxy-ssl_client_cert"]
 
     def _enforce_cert_newlines(self, cert_data: str) -> str:
         cert_data = (
@@ -49,8 +41,15 @@ class StarletteRequestURANumberFinder(URANumberFinder):
 
         return result
 
-    def find(self) -> UraNumber:
-        formatted_cert = self._enforce_cert_newlines(self._cert)
+    def find(self, request: Request) -> UraNumber:
+        if "x-proxy-ssl_client_cert" not in request.headers:
+            raise HTTPException(
+                status_code=401,
+                detail="Missing client certificate",
+            )
+        cert = request.headers["x-proxy-ssl_client_cert"]
+
+        formatted_cert = self._enforce_cert_newlines(cert)
         uzi_server = UziServer(verify="SUCCESS", cert=formatted_cert)
 
         return UraNumber(uzi_server["SubscriberNumber"])
