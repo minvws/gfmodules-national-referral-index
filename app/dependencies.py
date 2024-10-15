@@ -1,15 +1,17 @@
-from fastapi import Depends, Request
+from fastapi import Request
 import inject
-from app.authentication import resolve_authenticated_ura_number
 from app.data import UraNumber
 from app.db.db import Database
-from app.config import Config, load_default_config
+from app.config import Config
 from app.services.referral_service import ReferralService
 from app.services.pseudonym_service import PseudonymService
+from app.services.ura_number_finder import (
+    StarletteRequestURANumberFinder,
+)
 
 
 def get_default_config() -> Config:
-    return load_default_config()
+    return inject.instance(Config)
 
 
 def get_database() -> Database:
@@ -24,7 +26,11 @@ def get_pseudonym_service() -> PseudonymService:
     return inject.instance(PseudonymService)
 
 
-def authenticated_ura(
-    request: Request, config: Config = Depends(get_default_config)
-) -> UraNumber:
-    return resolve_authenticated_ura_number(request, config)
+def authenticated_ura(request: Request) -> UraNumber:
+    finder = inject.instance(StarletteRequestURANumberFinder)
+
+    if not isinstance(finder, StarletteRequestURANumberFinder):
+        raise RuntimeError(
+            "URA number finder should implement the interface!",
+        )
+    return finder.find(request)
